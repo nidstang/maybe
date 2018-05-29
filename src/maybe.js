@@ -1,93 +1,100 @@
-// @flow
-
-// $FlowFixMe
-class Maybe<T> {
-    nullable: ?T;
-
-    constructor (nullable : ?T) {
-      this.nullable = nullable
+const Maybe = function (nullable) {
+  this.nullable = nullable
+  // privates
+  var _isFunction = fn => {
+    if (typeof fn !== 'function') {
+      throw new Error('Arg must be a function')
     }
+  }
+  var _isRequried = arg => {
+    throw new Error(`${arg} is required`)
+  }
 
-    static toMaybe (nullable : ?T) {
-      return new Maybe(nullable)
-    }
+  // publics
+  this.isNothing = () => {
+    return (this.nullable == null)
+  }
 
-    static Just (value : ?T) : Maybe<T> {
-      return new Maybe(value)
-    }
+  this.withDefault = defaultValue => {
+    return (this.isNothing()) ? defaultValue : this.nullable
+  }
 
-    static Nothing () : Maybe<T> {
-      return new Maybe(null)
-    }
+  this.andThen = (fn = _isRequried('fn')) => {
+    _isFunction(fn)
+    return (this.isNothing()) ? Maybe.Nothing() : fn(this.nullable)
+  }
 
-    isNothing () : boolean {
-      return (this.nullable == null)
-    }
+  this.safe = (fn = _isRequried('fn')) => {
+    _isFunction(fn)
+    return (this.isNothing()) ? {} : fn(this.nullable)
+  }
 
-    _getValue () : T {
-      if (!this.isNothing()) {
-        // $FlowFixMe
-        return this.nullable
-      }
-    }
+  this.map = (fn = _isRequried('fn')) => {
+    _isFunction(fn)
+    return (this.isNothing()) ? Maybe.Nothing() : Maybe.Just(fn(this.nullable))
+  }
 
-    withDefault (defaultValue : T) : T {
-      return (this.isNothing()) ? defaultValue : this.nullable
-    }
+  /**
+   * Example to use:
+   *
+   * match({
+   *  Just: value => console.log(value),
+   *  Nothing: () => console.error('The value is nothing'),
+   * });
+   *
+   */
+  this.match = (pattern = _isRequried('{Just: fn, Nothing: fn}')) => {
+    _isFunction(pattern.Just)
+    _isFunction(pattern.Nothing)
 
-    andThen (fn : (a : T) => Maybe<T>) : Maybe<T> {
-      return (this.isNothing()) ? Maybe.Nothing() : fn(this._getValue())
+    if (this.isNothing()) {
+      pattern.Nothing()
+    } else {
+      pattern.Just(this.nullable)
     }
+  }
 
-    // Apply a function but dont care the value returned
-    safe (fn : (a : T) => any) : any {
-      return (this.isNothing()) ? {} : fn(this._getValue())
-    }
+  /**
+   * Unwrap the value in Maybe and give you a pattern to return sth in Just or in Nothing.
+   *
+   * Example to use:
+   *
+   * let result = maybe.case({
+   *  Just: value => value + 1,
+   *  Nothing: () => 0
+   * })
+   *
+   * let withDefault = (maybe, default) => {
+   *  return maybe.case({
+   *      Just: value => value,
+   *      Nothing: () => default
+   *  })
+   * }
+   *
+   * withDefault (Maybe.Nothing(), 1) // 1
+   * withDefault (Maybe.Just(3), 1) // 3
+   *
+   * @param {Object} pattern
+   *
+   * @return {any}
+   */
+  this.case = (pattern = _isRequried('{Just: fn, Nothing: fn}')) => {
+    _isFunction(pattern.Just)
+    _isFunction(pattern.Nothing)
+    return (this.isNothing()) ? pattern.Nothing() : pattern.Just(this.nullable)
+  }
+}
 
-    map (fn : (a : T) => Maybe<T>) : Maybe<T> {
-      return (this.isNothing()) ? Maybe.Nothing() : Maybe.Just(fn(this._getValue()))
-    }
+Maybe.Just = function (value) {
+  return new Maybe(value)
+}
 
-    /**
-     * Example to use:
-     *
-     * match({
-     *  Just: value => console.log(value),
-     *  Nothing: () => console.error('The value is nothing'),
-     * });
-     *
-     */
-    match (pattern : { Just: (a : T) => void, Nothing: () => void }) : void {
-      (this.isNothing()) ? pattern.Nothing() : pattern.Just(this._getValue())
-    }
+Maybe.Nothing = function () {
+  return new Maybe(null)
+}
 
-    /**
-     * Unwrap the value in Maybe and give you a pattern to return sth in Just or in Nothing.
-     *
-     * Example to use:
-     *
-     * let result = maybe.case({
-     *  Just: value => value + 1,
-     *  Nothing: () => 0
-     * })
-     *
-     * let withDefault = (maybe, default) => {
-     *  return maybe.case({
-     *      Just: value => value,
-     *      Nothing: () => default
-     *  })
-     * }
-     *
-     * withDefault (Maybe.Nothing(), 1) // 1
-     * withDefault (Maybe.Just(3), 1) // 3
-     *
-     * @param {Object} pattern
-     *
-     * @return {any}
-     */
-    case (pattern : { Just: (a : T) => any, Nothing: () => any}) : any {
-      return (this.isNothing()) ? pattern.Nothing() : pattern.Just(this._getValue())
-    }
-};
+Maybe.toMaybe = function (nullable) {
+  return new Maybe(nullable)
+}
 
 export default Maybe

@@ -1,5 +1,110 @@
 import test from 'ava'
+import Maybe from '../src/maybe'
 
-test('my first test', t => {
-  t.pass()
+test('Create Maybe from nullable', t => {
+  const m = new Maybe()
+  t.is(m.isNothing(), true)
+})
+
+test('Create maybe from a number', t => {
+  const m = new Maybe(1)
+  t.is(m.isNothing(), false)
+})
+
+test('Create maybe from Maybe.Just', t => {
+  const m = Maybe.Just(1)
+  t.is(m.isNothing(), false)
+})
+
+test('Create maybe from Maybe.Nothing', t => {
+  t.is(Maybe.Nothing().isNothing(), true)
+})
+
+test('Cast nullable to Maybe', t => {
+  t.is(Maybe.toMaybe(undefined).isNothing(), true)
+})
+
+test('Applying function to Maybe', t => {
+  t.is(Maybe.Just(2).map(value => value * value).withDefault(0), 4)
+})
+
+test('Add int to Maybe int', t => {
+  const a1 = new Maybe(1)
+  const a2 = 1
+
+  const result = a1.map(x => x + a2)
+
+  t.is(result.withDefault(0), 2)
+})
+
+test('Run safe function', t => {
+  const m = new Maybe('Hello')
+  const result = m.safe(value => `${value} world`)
+
+  t.is(result, 'Hello world')
+})
+
+test('Match a pattern', t => {
+  const m = new Maybe(10)
+  let global = ''
+  m.match({
+    Just: value => {
+      global = 'Just value'
+    },
+    Nothing: () => {
+      global = 'Nothing'
+    }
+  })
+
+  t.is(global, 'Just value')
+})
+
+test('Match a pattern with Error', t => {
+  const m = new Maybe(10)
+  try {
+    m.match('')
+    t.pass()
+  } catch (ex) {
+    t.is(ex instanceof Error, true)
+  }
+})
+
+test('Case a pattern', t => {
+  const m = new Maybe(2)
+  const re = m.case({
+    Just: value => value * 4,
+    Nothing: () => 10
+  })
+
+  t.is(re, 8)
+})
+
+test('Case a pattern with a Error', t => {
+  const m = new Maybe(2)
+  try {
+    m.case({
+      Just: value => value * 4
+    })
+    t.pass()
+  } catch (ex) {
+    t.is(ex instanceof Error, true)
+  }
+})
+
+test('Test And then', t => {
+  const m = Maybe.Just(1)
+  const m1 = m.andThen(value => Maybe.Just(value * 2))
+  const m2 = m1.andThen(value => Maybe.Just('Hello world'))
+
+  t.is(m2.isNothing(), false)
+  t.is(m2.withDefault(0), 'Hello world')
+})
+
+test('Test And then', t => {
+  const m = Maybe.Just(1)
+  const m1 = m.andThen(value => Maybe.Nothing())
+  const m2 = m1.andThen(value => Maybe.Just('Hello world'))
+
+  t.is(m2.isNothing(), true)
+  t.is(m2.withDefault(0), 0)
 })
