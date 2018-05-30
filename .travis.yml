@@ -1,0 +1,19 @@
+language: node_js
+node_js:
+- "8"
+script:
+- npm run lint
+- npm test
+
+notifications:
+  email:
+    recipients:
+      - pfranco@outlook.com
+    on_success: always 
+    on_failure: always
+# deploy:
+#   provider: npm
+#   email: "pfranco@outlook.com"
+#   api_key: ""
+#   on:
+#     tags: true
