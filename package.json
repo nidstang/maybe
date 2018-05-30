@@ -2,7 +2,7 @@
   "name": "maybe",
   "version": "1.0.0",
   "description": "A maybe monad in JavaScript",
-  "main": "index.js",
+  "main": "dist/maybe.min.js",
   "scripts": {
     "lint": "eslint ./src",
     "lint-fix": "eslint ./src --fix",
@@ -20,6 +20,7 @@
     "@babel/preset-env": "^7.0.0-beta.49",
     "@babel/register": "^7.0.0-beta.49",
     "ava": "^0.25.0",
+    "babel-eslint": "^8.2.3",
     "babel-loader": "^8.0.0-beta.3",
     "eslint": "^4.19.1",
     "standard": "^11.0.1",
