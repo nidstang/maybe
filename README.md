@@ -13,7 +13,7 @@ console.log(c.isNothing()) // false
 console.log(d.isNothing()) // true
 ```
 
-## Aplying a function
+## Applying a function
 ```javascript
 //Simple adder
 cosnt a1 = new Maybe(1) // Just(1)
