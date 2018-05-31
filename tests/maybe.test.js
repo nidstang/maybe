@@ -108,3 +108,91 @@ test('Test And then with Nothing', t => {
   t.is(m2.isNothing(), true)
   t.is(withDefault(m2)(0), 0)
 })
+
+test('Required params control in withdefault', t => {
+  try {
+    withDefault()
+  } catch (ex) {
+    t.is(ex instanceof Error, true)
+  }
+})
+
+test('Required params control in map', t => {
+  try {
+    map()
+  } catch (ex) {
+    t.is(ex instanceof Error, true)
+  }
+})
+
+test('Required params control in andThen', t => {
+  try {
+    andThen()
+  } catch (ex) {
+    t.is(ex instanceof Error, true)
+  }
+})
+
+test('Required params control in safe', t => {
+  try {
+    safe()
+  } catch (ex) {
+    t.is(ex instanceof Error, true)
+  }
+})
+
+test('Required params control in match', t => {
+  try {
+    match()
+  } catch (ex) {
+    t.is(ex instanceof Error, true)
+  }
+})
+
+test('Required params control in caseof', t => {
+  try {
+    caseof()
+  } catch (ex) {
+    t.is(ex instanceof Error, true)
+  }
+})
+
+// test('isFunction control in map', t => {
+//   try {
+//     map(Maybe.Nothing(), '')
+//   } catch (ex) {
+//     t.is(ex instanceof Error, true)
+//   }
+// })
+
+// test('isFunction control in andThen', t => {
+//   try {
+//     andThen(Maybe.Nothing(), '')
+//   } catch (ex) {
+//     t.is(ex instanceof Error, true)
+//   }
+// })
+
+// test('isFunction params control in safe', t => {
+//   try {
+//     safe(Maybe.Nothing(), '')
+//   } catch (ex) {
+//     t.is(ex instanceof Error, true)
+//   }
+// })
+
+// test('isFunction params control in match', t => {
+//   try {
+//     match(Maybe.Nothing(), '')
+//   } catch (ex) {
+//     t.is(ex instanceof Error, true)
+//   }
+// })
+
+// test('isFunction params control in caseof', t => {
+//   try {
+//     caseof(Maybe.Nothing(), '')
+//   } catch (ex) {
+//     t.is(ex instanceof Error, true)
+//   }
+// })
