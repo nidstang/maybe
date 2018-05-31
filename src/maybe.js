@@ -12,7 +12,7 @@ const isRequired = arg => {
   throw new Error(`${arg} is required`)
 }
 
-function Maybe (nullable) {
+const Maybe = function (nullable) {
   this[SYMBOLS.NULLABLE] = nullable
   this.isNothing = () => this[SYMBOLS.NULLABLE] == null
 }
@@ -29,21 +29,21 @@ Maybe.Nothing = () => {
   return new Maybe(null)
 }
 
-Maybe.withDefault = (maybe = isRequired('maybe')) => (defaultValue = isRequired('defaultValue')) => {
+export const withDefault = (maybe = isRequired('maybe')) => (defaultValue = isRequired('defaultValue')) => {
   return maybe.isNothing() ? defaultValue : maybe[SYMBOLS.NULLABLE]
 }
 
-Maybe.map = (maybe = isRequired('maybe')) => (fn = isRequired('fn')) => {
+export const map = (maybe = isRequired('maybe')) => (fn = isRequired('fn')) => {
   isFunction(fn)
   return maybe.isNothing() ? Maybe.Nothing() : Maybe.Just(fn(maybe[SYMBOLS.NULLABLE]))
 }
 
-Maybe.andThen = (maybe = isRequired('maybe')) => (fn = isRequired('fn')) => {
+export const andThen = (maybe = isRequired('maybe')) => (fn = isRequired('fn')) => {
   isFunction(fn)
   return maybe.isNothing() ? Maybe.Nothing() : fn(maybe[SYMBOLS.NULLABLE])
 }
 
-Maybe.safe = (maybe = isRequired('maybe')) => (fn = isRequired('fn')) => {
+export const safe = (maybe = isRequired('maybe')) => (fn = isRequired('fn')) => {
   isFunction(fn)
   return maybe.isNothing() ? {} : fn(maybe[SYMBOLS.NULLABLE])
 }
@@ -57,7 +57,7 @@ Maybe.safe = (maybe = isRequired('maybe')) => (fn = isRequired('fn')) => {
  * });
  *
  */
-Maybe.match = (maybe = isRequired('maybe')) => (pattern = isRequired('{Just: function, Nothing: function}')) => {
+export const match = (maybe = isRequired('maybe')) => (pattern = isRequired('{Just: function, Nothing: function}')) => {
   isFunction(pattern.Just)
   isFunction(pattern.Nothing)
 
@@ -92,10 +92,10 @@ Maybe.match = (maybe = isRequired('maybe')) => (pattern = isRequired('{Just: fun
  *
  * @return {any}
  */
-Maybe.case = (maybe = isRequired('maybe')) => (pattern = isRequired('{Just: function, Nothing: function}')) => {
+export const caseof = (maybe = isRequired('maybe')) => (pattern = isRequired('{Just: function, Nothing: function}')) => {
   isFunction(pattern.Just)
   isFunction(pattern.Nothing)
   return maybe.isNothing() ? pattern.Nothing() : pattern.Just(maybe[SYMBOLS.NULLABLE])
 }
 
-export default Maybe
+export { Maybe }
