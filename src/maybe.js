@@ -1,3 +1,7 @@
+const SYMBOLS = {
+  NULLABLE: Symbol('nullable')
+}
+
 const isFunction = fn => {
   if (typeof fn !== 'function') {
     throw new Error('Arg must be a function')
@@ -9,8 +13,8 @@ const isRequired = arg => {
 }
 
 function Maybe (nullable) {
-  this.nullable = nullable
-  this.isNothing = () => this.nullable == null
+  this[SYMBOLS.NULLABLE] = nullable
+  this.isNothing = () => this[SYMBOLS.NULLABLE] == null
 }
 
 Maybe.from = (nullable) => {
@@ -26,22 +30,22 @@ Maybe.Nothing = () => {
 }
 
 Maybe.withDefault = (maybe = isRequired('maybe')) => (defaultValue = isRequired('defaultValue')) => {
-  return maybe.isNothing() ? defaultValue : maybe.nullable
+  return maybe.isNothing() ? defaultValue : maybe[SYMBOLS.NULLABLE]
 }
 
 Maybe.map = (maybe = isRequired('maybe')) => (fn = isRequired('fn')) => {
   isFunction(fn)
-  return maybe.isNothing() ? Maybe.Nothing() : Maybe.Just(fn(maybe.nullable))
+  return maybe.isNothing() ? Maybe.Nothing() : Maybe.Just(fn(maybe[SYMBOLS.NULLABLE]))
 }
 
 Maybe.andThen = (maybe = isRequired('maybe')) => (fn = isRequired('fn')) => {
   isFunction(fn)
-  return maybe.isNothing() ? Maybe.Nothing() : fn(maybe.nullable)
+  return maybe.isNothing() ? Maybe.Nothing() : fn(maybe[SYMBOLS.NULLABLE])
 }
 
 Maybe.safe = (maybe = isRequired('maybe')) => (fn = isRequired('fn')) => {
   isFunction(fn)
-  return maybe.isNothing() ? {} : fn(maybe.nullable)
+  return maybe.isNothing() ? {} : fn(maybe[SYMBOLS.NULLABLE])
 }
 
 /**
@@ -60,7 +64,7 @@ Maybe.match = (maybe = isRequired('maybe')) => (pattern = isRequired('{Just: fun
   if (maybe.isNothing()) {
     pattern.Nothing()
   } else {
-    pattern.Just(maybe.nullable)
+    pattern.Just(maybe[SYMBOLS.NULLABLE])
   }
 }
 
@@ -91,7 +95,7 @@ Maybe.match = (maybe = isRequired('maybe')) => (pattern = isRequired('{Just: fun
 Maybe.case = (maybe = isRequired('maybe')) => (pattern = isRequired('{Just: function, Nothing: function}')) => {
   isFunction(pattern.Just)
   isFunction(pattern.Nothing)
-  return maybe.isNothing() ? pattern.Nothing() : pattern.Just(maybe.nullable)
+  return maybe.isNothing() ? pattern.Nothing() : pattern.Just(maybe[SYMBOLS.NULLABLE])
 }
 
 export default Maybe
