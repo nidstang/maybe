@@ -1,5 +1,5 @@
 {
-  "name": "maybe",
+  "name": "maybe-monada",
   "version": "1.0.1",
   "description": "A maybe monad in JavaScript",
   "main": "dist/maybe.min.js",
