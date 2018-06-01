@@ -1,6 +1,6 @@
 {
   "name": "maybe",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A maybe monad in JavaScript",
   "main": "dist/maybe.min.js",
   "scripts": {
@@ -11,7 +11,9 @@
   },
   "keywords": [
     "maybe",
-    "monad"
+    "monad",
+    "javascript",
+    "maybe-monad"
   ],
   "author": "Pablo Fernandez",
   "license": "MIT",
