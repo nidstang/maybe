@@ -11,9 +11,11 @@ notifications:
       - pfranco@outlook.com
     on_success: always 
     on_failure: always
-# deploy:
-#   provider: npm
-#   email: "pfranco@outlook.com"
-#   api_key: ""
-#   on:
-#     tags: true
+deploy:
+  provider: npm
+  email: "pfranco@outlook.com"
+  api_key: $API_TOKEN
+  skip_cleanup: true
+  on:
+    branch: master
+    tags: true
