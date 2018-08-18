@@ -1,6 +1,6 @@
 {
   "name": "maybe-monada",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A maybe monad in JavaScript",
   "main": "dist/maybe.node.js",
   "browser": "dist/maybe.js",
