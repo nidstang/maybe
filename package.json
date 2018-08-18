@@ -1,8 +1,9 @@
 {
   "name": "maybe-monada",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A maybe monad in JavaScript",
-  "main": "dist/maybe.min.js",
+  "main": "dist/maybe.node.js",
+  "browser": "dist/maybe.js",
   "scripts": {
     "lint": "eslint ./src",
     "lint-fix": "eslint ./src --fix",
