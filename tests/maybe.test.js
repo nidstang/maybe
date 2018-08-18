@@ -1,5 +1,25 @@
 import test from 'ava'
-import { Maybe, map, andThen, match, caseof, withDefault, safe } from '../dist/maybe.node'
+// import { Maybe, map, andThen, match, caseof, withDefault, safe } from '../dist/maybe.node'
+import { Maybe, map, andThen, match, caseof, withDefault, safe } from '../src/maybe'
+
+// some useful functions
+const getFirst = (list) => {
+  const first = list[0]
+  if (first) {
+    return Maybe.Just(first)
+  }
+  else {
+    return Maybe.Nothing()
+  }
+}
+const validMonth = n => {
+  if (n > 0 && n <= 12) {
+    return Maybe.Just(n)
+  }
+  else {
+    return Maybe.Nothing()
+  }
+}
 
 test('Create Maybe from nullable', t => {
   const m = new Maybe()
@@ -107,6 +127,104 @@ test('Test And then with Nothing', t => {
 
   t.is(m2.isNothing(), true)
   t.is(withDefault(m2)(0), 0)
+})
+
+test('Test pipe with a map action', t => {
+  const m = new Maybe(2)
+  const value = 
+    m
+    .pipe('map', x => x * 2)
+    .pipe('withDefault', 0)
+  
+  t.is(value, 4)
+})
+
+test('Test pipe with andThen chain', t => {
+  const months = [1,2,3]
+  
+  const result = getFirst(months)
+    .pipe('andThen', validMonth)
+    .pipe('map', x => x * 2)
+    .pipe('withDefault', 0)
+
+  t.is(result, 2)
+})
+
+test('Test pipe chain with fail', t => {
+  const result = getFirst(1)
+    .pipe('andThen', validMonth)
+    .pipe('map', x => x * 2)
+  
+  t.is(result.isNothing(), true)
+})
+
+test('Test pipe with incorrect values', t => {
+  const m = new Maybe(1)
+  const r = m.pipe('sdf', 2)
+
+  t.is(r.isNothing(), true)
+})
+
+test('Test pipe with functions instead of names', t => {
+  const months = [1,2,3]
+  
+  const result = getFirst(months)
+    .pipe(andThen, validMonth)
+    .pipe(map, x => x * 2)
+    .pipe(withDefault, 0)
+
+  t.is(result, 2)
+})
+
+test('Creating a custom action to pipe', t => {
+  const customAction = maybe => {
+    return () => {
+      return caseof(maybe)({
+        Just: value => value + 1,
+        Nothing: () => 0
+      })
+    }
+  }
+
+  const result = getFirst([1])
+    .pipe(customAction)
+  
+  t.is(result, 2)
+})
+
+test('Custom action no curryable must return Maybe.Nothing', t => {
+  const customAction = maybe => {
+    return caseof(maybe)({
+      Just: value => value + 1,
+      Nothing: () => 0
+    })
+  }
+
+  const result = getFirst([1])
+    .pipe(customAction)
+  
+  t.is(result.isNothing(), true)
+
+})
+
+test('Test pipe with incorrect num of params', t => {
+  const m = Maybe.from(null)
+  const r = m.pipe('withDefault', 2, 1, 3, 4, 'sdfg')
+
+  t.is(r, 2)
+})
+
+test('Test pipe second without param must throw an error', t => {
+  const m = Maybe.Nothing()
+
+  try {
+    const r = m.pipe('withDefault')
+    t.fail()
+  }
+  catch (ex) {
+    t.is(ex instanceof Error, true)
+  }
+
 })
 
 test('Required params control in withdefault', t => {
