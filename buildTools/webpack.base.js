@@ -3,20 +3,11 @@ const webpack = require('webpack');
 const path = require('path');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
-const sourcePath = path.resolve(__dirname, 'src');
-const libraryName = 'maybe';
-const output = `${libraryName}.min.js`;
+const sourcePath = path.resolve(__dirname, '../src');
 
 module.exports = {
   mode: 'production',
-  entry: path.resolve(__dirname, 'src/main.js'),
-  output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: output,
-    library: libraryName,
-    libraryTarget: 'umd',
-    umdNamedDefine: true,
-  },
+  entry: path.resolve(__dirname, '../src/maybe.js'),
 
   resolve: {
     extensions: ['.js'],
