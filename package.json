@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "eslint ./src",
     "lint-fix": "eslint ./src --fix",
-    "transpile": "webpack",
+    "transpile": "webpack --config buildTools/webpack.config.js",
     "test": "ava tests/"
   },
   "keywords": [
@@ -27,7 +27,8 @@
     "eslint": "^4.19.1",
     "standard": "^11.0.1",
     "webpack": "^4.10.0",
-    "webpack-cli": "^2.1.4"
+    "webpack-cli": "^2.1.4",
+    "webpack-merge": "^4.1.4"
   },
   "ava": {
     "require": [

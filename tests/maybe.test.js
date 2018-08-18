@@ -1,5 +1,5 @@
 import test from 'ava'
-import { Maybe, map, andThen, match, caseof, withDefault, safe } from '../src/maybe'
+import { Maybe, map, andThen, match, caseof, withDefault, safe } from '../dist/maybe.node'
 
 test('Create Maybe from nullable', t => {
   const m = new Maybe()
