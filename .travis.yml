@@ -14,7 +14,7 @@ notifications:
 deploy:
   provider: npm
   email: "pfranco@outlook.com"
-  api_key: $API_TOKEN
+  api_key: "MHwZhBj5rx1o/O85gQ6n3peF8zkbZ9KO/KMa9Snq8V3+7ZRybt4brjw/rYW1bfhrf9iTvSCXU0bYROZdOUsFTGh74xD2WZLI4iO59Oh+b2oukJ7DNMy0DatA2Hu8G2Ytd2GLNX6lpD1TOpSzxG9hEqr1+MqLoTU41skoXzmXbeWqIUPeOmyzC2qUzboE+HRiCGpGTf+9LIR3yGLR/96NOBjNffnjnOZhNt7nikOorqIIsCSIGYcj2rKm18egDkJfF4oCnn+Pf8p8mCXGKSAtIzWXvzKGHHs2B3Z6Qgn5f4X0CSfa9zOjoLA1uYpGLnjTgYMJHkyepuHay3hoWzl7+gYyT2WneNZTYC2cBPzpWR1L9v8zznW8j5F1gUfMwE2jqCozHV/8cSEHo6t26Tskr/s1LjCGvR5kCKUC2kA8p3q3eCRFdR+jcUL9lYo1zLFiDsoeAUC6Eh0jRJjOo+LAaEoF7oPXr76rPjCj5rncpwbnQnBmbLoRWk6y6cMRMWtMd5q12VPY5+milXbqwHbeXxLqcyCJ36hiclwNbn93aKzJtRhDfFUBYPeA+OUL+cvdllRk4gavJc4/kFsCMOp3DDl3SjP9/ppFrkXG9cuF+jUWTFqUaIxPC9TdZ7nOzkal63RNyk8VKVptqr42J4UGGpTg42SiNy+C1dwSehPUvEA="
   skip_cleanup: true
   on:
     branch: master

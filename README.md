@@ -16,7 +16,7 @@ console.log(d.isNothing()) // true
 ## Applying a function
 ```javascript
 //Simple adder
-cosnt a1 = new Maybe(1) // Just(1)
+const a1 = new Maybe(1) // Just(1)
 const result = map(a1)(x => x + 1) // Just(2)
 ```
 
