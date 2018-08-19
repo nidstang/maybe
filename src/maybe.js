@@ -98,20 +98,17 @@ export const caseof = (maybe = isRequired('maybe')) => (pattern = isRequired('{J
   return maybe.isNothing() ? pattern.Nothing() : pattern.Just(maybe[SYMBOLS.NULLABLE])
 }
 
-
 Maybe.prototype.pipe = function (action, param) {
-  const fn = (typeof action === 'function')? action : exports[action]
+  const fn = (typeof action === 'function') ? action : exports[action]
   if (fn) {
     const fnCurried = fn(this)
 
     if (fnCurried && typeof fnCurried === 'function') {
       return fnCurried(param)
-    }
-    else {
+    } else {
       return Maybe.Nothing()
     }
-  }
-  else {
+  } else {
     return Maybe.Nothing()
   }
 }
