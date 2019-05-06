@@ -8,6 +8,9 @@ const sourcePath = path.resolve(__dirname, '../src');
 module.exports = {
   mode: 'production',
   entry: path.resolve(__dirname, '../src/maybe.js'),
+  optimization: {
+      minimizer: [new UglifyJsPlugin()]
+  },
 
   resolve: {
     extensions: ['.js'],
@@ -25,8 +28,4 @@ module.exports = {
       },
     ],
   },
-
-  plugins: [
-    new UglifyJsPlugin(),
-  ],
 }
