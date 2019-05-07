@@ -1,116 +1,48 @@
-const SYMBOLS = {
-  NULLABLE: Symbol('nullable')
-}
 
-const isFunction = fn => {
-  if (typeof fn !== 'function') {
-    throw new Error('Arg must be a function')
-  }
-}
+const Maybe = value => {
+  const isNothing = () => !value
 
-const isRequired = arg => {
-  throw new Error(`${arg} is required`)
-}
+  return {
+    isNothing: isNothing,
 
-const Maybe = function (nullable) {
-  this[SYMBOLS.NULLABLE] = nullable
-  this.isNothing = () => this[SYMBOLS.NULLABLE] == null
-}
+    withDefault: defaultValue => (
+      isNothing() ? defaultValue : value
+    ),
 
-Maybe.from = (nullable) => {
-  return new Maybe(nullable)
-}
+    withDefaultFn: fn => (
+      isNothing() ? fn() : value
+    ),
 
-Maybe.Just = (value) => {
-  return new Maybe(value)
-}
+    map: fn => (
+      isNothing() ? Maybe(null) : Maybe(fn(value))
+    ),
 
-Maybe.Nothing = () => {
-  return new Maybe(null)
-}
+    filter: fn => (
+      fn(value) ? Maybe(value) : Maybe(null)
+    ),
 
-export const withDefault = (maybe = isRequired('maybe')) => (defaultValue = isRequired('defaultValue')) => {
-  return maybe.isNothing() ? defaultValue : maybe[SYMBOLS.NULLABLE]
-}
+    andThen: fn => (
+      isNothing() ? Maybe(null) : fn(value)
+    ),
 
-export const map = (maybe = isRequired('maybe')) => (fn = isRequired('fn')) => {
-  isFunction(fn)
-  return maybe.isNothing() ? Maybe.Nothing() : Maybe.Just(fn(maybe[SYMBOLS.NULLABLE]))
-}
+    safe: fn => (
+      isNothing() ? {} : fn(value)
+    ),
 
-export const andThen = (maybe = isRequired('maybe')) => (fn = isRequired('fn')) => {
-  isFunction(fn)
-  return maybe.isNothing() ? Maybe.Nothing() : fn(maybe[SYMBOLS.NULLABLE])
-}
+    caseof: pattern => {
+      const { Just, Nothing } = Maybe(pattern)
+        .filter(({ Just, Nothing }) => !!Just && !!Nothing)
+        .withDefaultFn(() => {
+          throw new Error('Pattern malformed')
+        })
 
-export const safe = (maybe = isRequired('maybe')) => (fn = isRequired('fn')) => {
-  isFunction(fn)
-  return maybe.isNothing() ? {} : fn(maybe[SYMBOLS.NULLABLE])
-}
-
-/**
- * Example to use:
- *
- * match({
- *  Just: value => console.log(value),
- *  Nothing: () => console.error('The value is nothing'),
- * });
- *
- */
-export const match = (maybe = isRequired('maybe')) => (pattern = isRequired('{Just: function, Nothing: function}')) => {
-  isFunction(pattern.Just)
-  isFunction(pattern.Nothing)
-
-  if (maybe.isNothing()) {
-    pattern.Nothing()
-  } else {
-    pattern.Just(maybe[SYMBOLS.NULLABLE])
-  }
-}
-
-/**
- * Unwrap the value in Maybe and give you a pattern to return sth in Just or in Nothing.
- *
- * Example to use:
- *
- * let result = maybe.case({
- *  Just: value => value + 1,
- *  Nothing: () => 0
- * })
- *
- * let withDefault = (maybe, default) => {
- *  return maybe.case({
- *      Just: value => value,
- *      Nothing: () => default
- *  })
- * }
- *
- * withDefault (Maybe.Nothing(), 1) // 1
- * withDefault (Maybe.Just(3), 1) // 3
- *
- * @param {Object} pattern
- *
- * @return {any}
- */
-export const caseof = (maybe = isRequired('maybe')) => (pattern = isRequired('{Just: function, Nothing: function}')) => {
-  isFunction(pattern.Just)
-  isFunction(pattern.Nothing)
-  return maybe.isNothing() ? pattern.Nothing() : pattern.Just(maybe[SYMBOLS.NULLABLE])
-}
-
-Maybe.prototype.pipe = function (action, param) {
-  const fn = (typeof action === 'function') ? action : exports[action]
-  if (fn) {
-    const fnCurried = fn(this)
-
-    if (fnCurried && typeof fnCurried === 'function') {
-      return fnCurried(param)
-    } else {
-      return Maybe.Nothing()
+      return isNothing() ? Nothing() : Just(value)
     }
-  } else {
-    return Maybe.Nothing()
   }
 }
 
-export { Maybe }
+Maybe.Just = value => Maybe(value)
+Maybe.Nothing = () => Maybe(null)
+Maybe.from = Maybe.Just
+
+export default Maybe
