@@ -1,6 +1,6 @@
 
 const Maybe = value => {
-  const isNothing = () => !value
+  const isNothing = () => value === null || value === undefined
 
   return {
     isNothing: isNothing,

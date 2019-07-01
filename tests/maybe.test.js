@@ -116,6 +116,18 @@ test('Another test filter', t => {
   t.is(res, 4)
 })
 
+test('Maybe must work properly with Booleans', t => {
+  const m = Maybe.from(false)
+  t.is(m.isNothing(), false)
+  const value = m.withDefault('hello')
+  t.is(value, false)
+})
+
+test('Maybe must work properly with falsy numbers', t => {
+  const m = Maybe.from(0)
+  t.is(m.isNothing(), false)
+})
+
 /* test('Required params control in withdefault', t => {
   try {
     withDefault()
