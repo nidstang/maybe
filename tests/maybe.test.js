@@ -123,6 +123,17 @@ test('several filter-chained must work properly', t => {
     .withDefault(0)
 
   t.is(res, 0)
+  
+test('Maybe must work properly with Booleans', t => {
+  const m = Maybe.from(false)
+  t.is(m.isNothing(), false)
+  const value = m.withDefault('hello')
+  t.is(value, false)
+})
+
+test('Maybe must work properly with falsy numbers', t => {
+  const m = Maybe.from(0)
+  t.is(m.isNothing(), false)
 })
 
 /* test('Required params control in withdefault', t => {

@@ -1,6 +1,6 @@
 {
   "name": "maybe-monada",
-  "version": "2.0.0",
+  "version": "2.0.3",
   "description": "A maybe monad in JavaScript",
   "main": "dist/maybe.node.js",
   "browser": "dist/maybe.js",
@@ -8,7 +8,10 @@
     "lint": "eslint ./src",
     "lint-fix": "eslint ./src --fix",
     "transpile": "webpack --config buildTools/webpack.config.js",
-    "test": "ava tests/"
+    "test": "ava tests/",
+    "preversion": "npm test",
+    "version": "npm run lint && npm run transpile && git add -A dist",
+    "postversion": "git push origin dev && git push --tags"
   },
   "keywords": [
     "maybe",
