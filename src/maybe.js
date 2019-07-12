@@ -17,9 +17,12 @@ const Maybe = value => {
       isNothing() ? Maybe(null) : Maybe(fn(value))
     ),
 
-    filter: fn => (
-      fn(value) ? Maybe(value) : Maybe(null)
-    ),
+    filter: fn => {
+      if (!isNothing()) {
+        return fn(value) ? Maybe(value) : Maybe(null)
+      }
+      return Maybe(null)
+    },
 
     andThen: fn => (
       isNothing() ? Maybe(null) : fn(value)
