@@ -37,3 +37,47 @@ const result = caseof(maybe)({
 
 // result == Just(4)
 ```
+
+## Pipeline
+The pipe method attaches a new action to the maybe, also you can create a chain of pipes 
+
+```
+maybe | action1 | action2 | action3 ...
+```
+
+Note that actions must return a new maybe otherwise the chain will break.
+
+##### Maybe.prototype.pipe(action, param)
+```javascript
+const getFirst = list => {
+    const first = list[0]
+    if (first) {
+        return Maybe.Just(first)
+    } else {
+        return Maybe.Nothing()
+    }
+}
+
+const validMonth = month => {
+    if (month > 0 && month <= 12) {
+        return Maybe.Just(month)
+    } else {
+        return Maybe.Nothing()
+    }
+}
+
+// Custom action must be Maybe a -> Param -> Maybe b | b 
+const customAction = maybe => {
+    return () => {
+        const monthName = getNameByMonth(withDefault(maybe)(1))
+        return monthName
+    }
+}
+
+const result = getFirst([1, 2, 3])
+    .pipe(map, m => m * 2)
+    .pipe('andThen', validMonth)
+    .pipe(customAction)
+
+// result === 'February'
+```

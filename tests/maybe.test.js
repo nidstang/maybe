@@ -1,13 +1,13 @@
 import test from 'ava'
-import { Maybe, map, andThen, match, caseof, withDefault, safe } from '../dist/maybe.node'
+import Maybe from '../src/maybe'
 
 test('Create Maybe from nullable', t => {
-  const m = new Maybe()
+  const m = Maybe()
   t.is(m.isNothing(), true)
 })
 
 test('Create maybe from a number', t => {
-  const m = new Maybe(1)
+  const m = Maybe(1)
   t.is(m.isNothing(), false)
 })
 
@@ -25,53 +25,47 @@ test('Cast nullable to Maybe', t => {
 })
 
 test('Applying function to Maybe', t => {
-  t.is(withDefault(map(Maybe.Just(2))(value => value * value))(0), 4)
+  const result = Maybe.Just(2)
+    .map(val => val * val)
+    .withDefault(0)
+
+  t.is(result, 4)
 })
 
 test('Add int to Maybe int', t => {
-  const a1 = new Maybe(1)
+  const a1 = Maybe(1)
   const a2 = 1
 
-  const result = map(a1)(x => x + a2)
+  const result = a1.map(x => x + a2)
 
-  t.is(withDefault(result)(0), 2)
+  t.is(result.withDefault(0), 2)
 })
 
 test('Run safe function', t => {
-  const m = new Maybe('Hello')
-  const result = safe(m)(value => `${value} world`)
+  const m = Maybe('Hello')
+  const result = m.safe(value => `${value} world`)
 
   t.is(result, 'Hello world')
 })
 
-test('Match a pattern', t => {
-  const m = new Maybe(10)
-  let global = ''
-  match(m)({
+test('caseof a pattern', t => {
+  const m = Maybe(10)
+  let result = ''
+  m.caseof({
     Just: value => {
-      global = 'Just value'
+      result = 'Just value'
     },
     Nothing: () => {
-      global = 'Nothing'
+      result = 'Nothing'
     }
   })
 
-  t.is(global, 'Just value')
+  t.is(result, 'Just value')
 })
 
-test('Match a pattern with Error', t => {
-  const m = new Maybe(10)
-  try {
-    match(m)('')
-    t.pass()
-  } catch (ex) {
-    t.is(ex instanceof Error, true)
-  }
-})
-
-test('Case a pattern', t => {
-  const m = new Maybe(2)
-  const re = caseof(m)({
+test('Caseof a pattern with return', t => {
+  const m = Maybe(2)
+  const re = m.caseof({
     Just: value => value * 4,
     Nothing: () => 10
   })
@@ -79,37 +73,50 @@ test('Case a pattern', t => {
   t.is(re, 8)
 })
 
-test('Case a pattern with a Error', t => {
-  const m = new Maybe(2)
-  try {
-    caseof(m)({
-      Just: value => value * 4
-    })
-    t.pass()
-  } catch (ex) {
-    t.is(ex instanceof Error, true)
-  }
+test('Caseof a malformed pattern', t => {
+  const m = Maybe(2)
+  t.throws(() => m.caseof({
+    Nothing: () => 10
+  }))
 })
 
-test('Test And then', t => {
-  const m = Maybe.Just(1)
-  const m1 = andThen(m)(value => Maybe.Just(value * 2))
-  const m2 = andThen(m1)(value => Maybe.Just('Hello world'))
+test('Chaining maybes with andThen', t => {
+  const res = Maybe.Just(1)
+    .andThen(value => Maybe.Just(value * 2))
+    .andThen(value => Maybe.Just('Hello world'))
 
-  t.is(m2.isNothing(), false)
-  t.is(withDefault(m2)(0), 'Hello world')
+  t.is(res.isNothing(), false)
+  t.is(res.withDefault(0), 'Hello world')
 })
 
-test('Test And then with Nothing', t => {
-  const m = Maybe.Just(1)
-  const m1 = andThen(m)(value => Maybe.Nothing())
-  const m2 = andThen(m1)(value => Maybe.Just('Hello world'))
+test('Chaining nothing maybes with andThen', t => {
+  const res = Maybe.Just(1)
+    .andThen(value => Maybe.Nothing())
+    .andThen(value => Maybe.Just('Hello world'))
 
-  t.is(m2.isNothing(), true)
-  t.is(withDefault(m2)(0), 0)
+  t.is(res.isNothing(), true)
+  t.is(res.withDefault(0), 0)
 })
 
-test('Required params control in withdefault', t => {
+test('Test filter', t => {
+  const res = Maybe.from(1)
+    .map(x => x * 2)
+    .filter(x => x > 2)
+    .withDefault(0)
+
+  t.is(res, 0)
+})
+
+test('Another test filter', t => {
+  const res = Maybe.from(2)
+    .map(x => x * 2)
+    .filter(x => x > 2)
+    .withDefault(0)
+
+  t.is(res, 4)
+})
+
+/* test('Required params control in withdefault', t => {
   try {
     withDefault()
   } catch (ex) {
@@ -155,7 +162,7 @@ test('Required params control in caseof', t => {
   } catch (ex) {
     t.is(ex instanceof Error, true)
   }
-})
+}) */
 
 // test('isFunction control in map', t => {
 //   try {
