@@ -116,6 +116,15 @@ test('Another test filter', t => {
   t.is(res, 4)
 })
 
+test('several filter-chained must work properly', t => {
+  const res = Maybe.from([])
+    .filter(arr => arr.length !== 0)
+    .filter(arr => arr.slice(1, 2))
+    .withDefault(0)
+
+  t.is(res, 0)
+})
+
 /* test('Required params control in withdefault', t => {
   try {
     withDefault()
