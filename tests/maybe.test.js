@@ -123,6 +123,7 @@ test('several filter-chained must work properly', t => {
     .withDefault(0)
 
   t.is(res, 0)
+})
   
 test('Maybe must work properly with Booleans', t => {
   const m = Maybe.from(false)
