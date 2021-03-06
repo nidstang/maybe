@@ -1,4 +1,6 @@
-const Nothing = () => ({
+import MaybeProtocol from './protocol';
+
+const Nothing = () => Object.assign({}, MaybeProtocol, {
     isNothing: () => true,
 
     withDefault: (defaultValue) => (
@@ -33,7 +35,7 @@ const Nothing = () => ({
     ),
 });
 
-const Just = (value) => ({
+const Just = (value) => Object.assign({}, MaybeProtocol, {
     isNothing: () => false,
 
     withDefault: () => (

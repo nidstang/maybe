@@ -9,6 +9,7 @@
   "rules": {
       "indent": ["warn", 4],
       "no-shadow": "off",
-      "no-confusing-arrow": ["error", {"allowParens": true}]
+      "no-confusing-arrow": ["error", {"allowParens": true}],
+      "prefer-object-spread": "off"
   }
 }
