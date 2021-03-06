@@ -1,50 +1,87 @@
+const Nothing = () => ({
+    isNothing: () => true,
+
+    withDefault: (defaultValue) => (
+        defaultValue
+    ),
+
+    withDefaultFn: (fn) => (
+        fn()
+    ),
+
+    map: () => (
+        Nothing()
+    ),
+
+    filter: () => Nothing(),
+
+    andThen: () => Nothing(),
+
+    safe: () => {},
+
+    caseof: ({ Just, Nothing }) => {
+        if (!Just || !Nothing) throw new Error('Pattern malformed');
+        return Nothing();
+    },
+
+    zip: () => (
+        Nothing()
+    ),
+
+    zipWith: () => (
+        Nothing()
+    ),
+});
+
+const Just = (value) => ({
+    isNothing: () => false,
+
+    withDefault: () => (
+        value
+    ),
+
+    withDefaultFn: () => (
+        value
+    ),
+
+    map: (fn) => (
+        Just(fn(value))
+    ),
+
+    filter: (fn) => (fn(value) ? Just(value) : Nothing()),
+
+    andThen: (fn) => fn(value),
+
+    safe: (fn) => (
+        fn(value)
+    ),
+
+    caseof: ({ Just, Nothing }) => {
+        if (!Just || !Nothing) {
+            throw new Error('Pattern malformed');
+        }
+        return Just(value);
+    },
+
+    zip: (other) => (
+        other.map((otherValue) => ([value, otherValue]))
+    ),
+
+    zipWith(other, fn) {
+        return this.zip(other).map(fn);
+    },
+});
+
 const Maybe = (value) => {
-    const isNothing = () => value === null || value === undefined;
+    if (value === null || value === undefined) {
+        return Nothing();
+    }
 
-    return {
-        isNothing,
-
-        withDefault: (defaultValue) => (
-            isNothing() ? defaultValue : value
-        ),
-
-        withDefaultFn: (fn) => (
-            isNothing() ? fn() : value
-        ),
-
-        map: (fn) => (
-            isNothing() ? Maybe(null) : Maybe(fn(value))
-        ),
-
-        filter: (fn) => {
-            if (!isNothing()) {
-                return fn(value) ? Maybe(value) : Maybe(null);
-            }
-            return Maybe(null);
-        },
-
-        andThen: (fn) => (
-            isNothing() ? Maybe(null) : fn(value)
-        ),
-
-        safe: (fn) => (
-            isNothing() ? {} : fn(value)
-        ),
-
-        caseof: (pattern) => {
-            const { Just, Nothing } = Maybe(pattern)
-                .filter(({ Just, Nothing }) => !!Just && !!Nothing)
-                .withDefaultFn(() => {
-                    throw new Error('Pattern malformed');
-                });
-
-            return isNothing() ? Nothing() : Just(value);
-        },
-    };
+    return Just(value);
 };
 
-Maybe.Just = (value) => Maybe(value);
-Maybe.Nothing = () => Maybe(null);
-Maybe.from = Maybe.Just;
+Maybe.Just = Just;
+Maybe.Nothing = Nothing;
+Maybe.from = Maybe;
 
 export default Maybe;
