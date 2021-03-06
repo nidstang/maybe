@@ -26,11 +26,11 @@ const Nothing = () => Object.assign({}, MaybeProtocol, {
         return Nothing();
     },
 
-    zip: () => (
+    zip: (other) => (
         Nothing()
     ),
 
-    zipWith: () => (
+    zipWith: (other, fn) => (
         Nothing()
     ),
 });

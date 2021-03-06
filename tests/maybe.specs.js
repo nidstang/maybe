@@ -170,3 +170,79 @@ test('filter', (t) => {
 
     t.end();
 });
+
+test('zip', (t) => {
+    {
+        const m = Maybe.Nothing();
+        const m2 = Maybe.Nothing();
+
+        t.same(m.zip(m2).isNothing(), true, 'Given two Nothing, zip must return Nothing');
+    }
+    {
+        const m = Maybe.Nothing();
+        const m2 = Maybe.Just(1);
+
+        t.same(m.zip(m2).isNothing(), true, 'Given a Nothing and a (Just 1), zip must return Nothing');
+    }
+
+    {
+        const m = Maybe.Just(1);
+        const m2 = Maybe.Nothing();
+
+        t.same(m.zip(m2).isNothing(), true, 'Given a (Just 1) and a Nothing, zip must return Nothing');
+    }
+
+    {
+        const m = Maybe.Just(1);
+        const m2 = Maybe.Just(true);
+
+        const res = m.zip(m2);
+
+        const check = (tuple) => {
+            t.same(tuple, [1, true], 'Given two Just, zip must return a tuple with both values inside of a new Maybe');
+        };
+
+        res.map(check);
+    }
+
+    t.end();
+});
+
+test('zipWith', (t) => {
+    const combine = (([a, b]) => a + b);
+
+    {
+        const m = Maybe.Nothing();
+        const m2 = Maybe.Nothing();
+
+        t.same(m.zipWith(m2, combine).isNothing(), true, 'Given two Nothing, zipWith must return Nothing');
+    }
+    {
+        const m = Maybe.Nothing();
+        const m2 = Maybe.Just(1);
+
+        t.same(m.zipWith(m2, combine).isNothing(), true, 'Given a Nothing and a (Just 1), zipWith must return Nothing');
+    }
+
+    {
+        const m = Maybe.Just(1);
+        const m2 = Maybe.Nothing();
+
+        t.same(m.zipWith(m2, combine).isNothing(), true, 'Given a (Just 1) and a Nothing, zipWith must return Nothing');
+    }
+
+    {
+        const m = Maybe.Just(2);
+        const m2 = Maybe.Just(2);
+
+        const res = m.zipWith(m2, combine);
+
+        const check = (value) => {
+            t.same(value, 4, 'Given two Just(2), zipWith must return the result of applying f(this.zip) inside of a new Maybe');
+        };
+
+        res.map(check);
+    }
+
+    t.end();
+});
