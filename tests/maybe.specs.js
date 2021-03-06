@@ -1,229 +1,172 @@
-import test from 'ava';
+import test from 'tape';
 import Maybe from '../src/maybe';
 
-// const test = require('tape');
-// const Maybe =
+test('Maybe factory', (t) => {
+    {
+        const m = Maybe();
+        t.same(m.isNothing(), true, 'Given a nullable to Maybe, m.isNothing() must return true');
+    }
 
-test('Create Maybe from nullable', (t) => {
-    const m = Maybe();
-    t.is(m.isNothing(), true);
+    {
+        const m = Maybe(1);
+        t.same(m.isNothing(), false, 'Given a number to Maybe, m.isNothing() must return false');
+    }
+
+    t.end();
 });
 
-test('Create maybe from a number', (t) => {
-    const m = Maybe(1);
-    t.is(m.isNothing(), false);
-});
-
-test('Create maybe from Maybe.Just', (t) => {
+test('Maybe.Just', (t) => {
     const m = Maybe.Just(1);
-    t.is(m.isNothing(), false);
+    t.same(m.isNothing(), false, 'Given a number to Maybe.Just, m.isNothing() must return false');
+
+    t.end();
 });
 
-test('Create maybe from Maybe.Nothing', (t) => {
-    t.is(Maybe.Nothing().isNothing(), true);
+test('Maybe.Nothing', (t) => {
+    const m = Maybe.Nothing();
+    t.same(m.isNothing(), true, 'Given a number to Maybe.Nothing, m.isNothing() must return true');
+
+    t.end();
 });
 
-test('Cast nullable to Maybe', (t) => {
-    t.is(Maybe.from(undefined).isNothing(), true);
+test('Maybe.from', (t) => {
+    {
+        const m = Maybe.from(undefined);
+        t.same(m.isNothing(), true, 'Given an undefined to Maybe.from, m.isNothing() must return true');
+    }
+
+    {
+        const m = Maybe.from(false);
+        t.same(m.isNothing(), false);
+        const value = m.withDefault('hello');
+        t.same(value, false, 'Given a boolean False, the unwrapped value must be False');
+    }
+
+    {
+        const m = Maybe.from(0);
+        t.same(m.isNothing(), false, 'Given a falsy value 0, isNothing must be False');
+    }
+    t.end();
 });
 
-test('Applying function to Maybe', (t) => {
-    const result = Maybe.Just(2)
-        .map((val) => val * val)
-        .withDefault(0);
+test('map', (t) => {
+    {
+        const result = Maybe.Just(2)
+            .map((val) => val * val)
+            .withDefault(0);
 
-    t.is(result, 4);
+        t.same(result, 4, 'Given a Just(2) and a function, map should apply the function to maybe');
+    }
+    {
+        const a1 = Maybe(1);
+        const a2 = 1;
+
+        const result = a1.map((x) => x + a2);
+
+        t.same(result.withDefault(0), 2, 'Given a Maybe(1) and a function, map should apply the function to maybe');
+    }
+
+    t.end();
 });
 
-test('Add int to Maybe int', (t) => {
-    const a1 = Maybe(1);
-    const a2 = 1;
-
-    const result = a1.map((x) => x + a2);
-
-    t.is(result.withDefault(0), 2);
-});
-
-test('Run safe function', (t) => {
+test('safe', (t) => {
     const m = Maybe('Hello');
     const result = m.safe((value) => `${value} world`);
 
-    t.is(result, 'Hello world');
+    t.same(result, 'Hello world', 'Given a Maybe and a function, safe must apply the maybe to that function');
+
+    t.end();
 });
 
-test('caseof a pattern', (t) => {
-    const m = Maybe(10);
-    let result = '';
-    m.caseof({
-        Just: () => {
-            result = 'Just value';
-        },
-        Nothing: () => {
-            result = 'Nothing';
-        },
-    });
+test('caseof', (t) => {
+    {
+        const m = Maybe(10);
+        let result = '';
+        m.caseof({
+            Just: () => {
+                result = 'Just value';
+            },
+            Nothing: () => {
+                result = 'Nothing';
+            },
+        });
 
-    t.is(result, 'Just value');
+        t.same(result, 'Just value', 'Given a Maybe and a just-nothing pattern, caseof must call the correct function');
+    }
+
+    {
+        const m = Maybe(2);
+        const re = m.caseof({
+            Just: (value) => value * 4,
+            Nothing: () => 10,
+        });
+
+        t.same(re, 8, 'Given a Maybe and a just-nothing pattern, caseof must call the correct function and give the value back');
+    }
+
+    {
+        const m = Maybe(2);
+        try {
+            m.caseof({
+                Just: () => 10,
+            });
+            t.fail();
+        } catch (ex) {
+            t.pass('Given a Maybe and a invalid just-nothing pattern, caseof must throw an malformed exception');
+        }
+    }
+
+    t.end();
+});
+test('andThen', (t) => {
+    {
+        const res = Maybe.Just(1)
+            .andThen((value) => Maybe.Just(value * 2))
+            .andThen(() => Maybe.Just('Hello world'));
+
+        t.same(res.isNothing(), false);
+        t.same(res.withDefault(0), 'Hello world', 'Given a Just and a function that returns a Maybe, andThen must apply that function to Just');
+    }
+
+    {
+        const res = Maybe.Just(1)
+            .andThen(() => Maybe.Nothing())
+            .andThen(() => Maybe.Just('Hello world'));
+
+        t.same(res.isNothing(), true);
+        t.same(res.withDefault(0), 0, 'Given a Nothing and a function that returns a Maybe, andThe must not apply the function');
+    }
+
+    t.end();
 });
 
-test('Caseof a pattern with return', (t) => {
-    const m = Maybe(2);
-    const re = m.caseof({
-        Just: (value) => value * 4,
-        Nothing: () => 10,
-    });
+test('filter', (t) => {
+    {
+        const res = Maybe.from(1)
+            .map((x) => x * 2)
+            .filter((x) => x > 2)
+            .withDefault(0);
 
-    t.is(re, 8);
+        t.same(res, 0, 'Given a Maybe and a predicate function, filter must return Nothing if the predicate is not fulfilled');
+    }
+
+    {
+        const res = Maybe.from(2)
+            .map((x) => x * 2)
+            .filter((x) => x > 2)
+            .withDefault(0);
+
+        t.same(res, 4, 'Given a Maybe and a predicate function, filter must return Just if the predicate is fulfilled');
+    }
+
+    {
+        const res = Maybe.from([])
+            .filter((arr) => arr.length !== 0)
+            .filter((arr) => arr.slice(1, 2))
+            .withDefault(0);
+
+        t.same(res, 0, 'Given a Maybe with an Array and a predicate function, filter must return Nothing if the predicate is not fulfilled');
+    }
+
+    t.end();
 });
-
-test('Caseof a malformed pattern', (t) => {
-    const m = Maybe(2);
-    t.throws(() => m.caseof({
-        Nothing: () => 10,
-    }));
-});
-
-test('Chaining maybes with andThen', (t) => {
-    const res = Maybe.Just(1)
-        .andThen((value) => Maybe.Just(value * 2))
-        .andThen(() => Maybe.Just('Hello world'));
-
-    t.is(res.isNothing(), false);
-    t.is(res.withDefault(0), 'Hello world');
-});
-
-test('Chaining nothing maybes with andThen', (t) => {
-    const res = Maybe.Just(1)
-        .andThen(() => Maybe.Nothing())
-        .andThen(() => Maybe.Just('Hello world'));
-
-    t.is(res.isNothing(), true);
-    t.is(res.withDefault(0), 0);
-});
-
-test('Test filter', (t) => {
-    const res = Maybe.from(1)
-        .map((x) => x * 2)
-        .filter((x) => x > 2)
-        .withDefault(0);
-
-    t.is(res, 0);
-});
-
-test('Another test filter', (t) => {
-    const res = Maybe.from(2)
-        .map((x) => x * 2)
-        .filter((x) => x > 2)
-        .withDefault(0);
-
-    t.is(res, 4);
-});
-
-test('several filter-chained must work properly', (t) => {
-    const res = Maybe.from([])
-        .filter((arr) => arr.length !== 0)
-        .filter((arr) => arr.slice(1, 2))
-        .withDefault(0);
-
-    t.is(res, 0);
-});
-
-test('Maybe must work properly with Booleans', (t) => {
-    const m = Maybe.from(false);
-    t.is(m.isNothing(), false);
-    const value = m.withDefault('hello');
-    t.is(value, false);
-});
-
-test('Maybe must work properly with falsy numbers', (t) => {
-    const m = Maybe.from(0);
-    t.is(m.isNothing(), false);
-});
-
-/* test('Required params control in withdefault', t => {
-  try {
-    withDefault()
-  } catch (ex) {
-    t.is(ex instanceof Error, true)
-  }
-})
-
-test('Required params control in map', t => {
-  try {
-    map()
-  } catch (ex) {
-    t.is(ex instanceof Error, true)
-  }
-})
-
-test('Required params control in andThen', t => {
-  try {
-    andThen()
-  } catch (ex) {
-    t.is(ex instanceof Error, true)
-  }
-})
-
-test('Required params control in safe', t => {
-  try {
-    safe()
-  } catch (ex) {
-    t.is(ex instanceof Error, true)
-  }
-})
-
-test('Required params control in match', t => {
-  try {
-    match()
-  } catch (ex) {
-    t.is(ex instanceof Error, true)
-  }
-})
-
-test('Required params control in caseof', t => {
-  try {
-    caseof()
-  } catch (ex) {
-    t.is(ex instanceof Error, true)
-  }
-}) */
-
-// test('isFunction control in map', t => {
-//   try {
-//     map(Maybe.Nothing(), '')
-//   } catch (ex) {
-//     t.is(ex instanceof Error, true)
-//   }
-// })
-
-// test('isFunction control in andThen', t => {
-//   try {
-//     andThen(Maybe.Nothing(), '')
-//   } catch (ex) {
-//     t.is(ex instanceof Error, true)
-//   }
-// })
-
-// test('isFunction params control in safe', t => {
-//   try {
-//     safe(Maybe.Nothing(), '')
-//   } catch (ex) {
-//     t.is(ex instanceof Error, true)
-//   }
-// })
-
-// test('isFunction params control in match', t => {
-//   try {
-//     match(Maybe.Nothing(), '')
-//   } catch (ex) {
-//     t.is(ex instanceof Error, true)
-//   }
-// })
-
-// test('isFunction params control in caseof', t => {
-//   try {
-//     caseof(Maybe.Nothing(), '')
-//   } catch (ex) {
-//     t.is(ex instanceof Error, true)
-//   }
-// })
