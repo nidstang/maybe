@@ -8,6 +8,7 @@
 
   "rules": {
       "indent": ["warn", 4],
-      "no-shadow": "off"
+      "no-shadow": "off",
+      "no-confusing-arrow": ["error", {"allowParens": true}]
   }
 }
