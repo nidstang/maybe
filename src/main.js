@@ -1,3 +1,3 @@
-import Maybe from './maybe'
+import Maybe from './maybe';
 
-export default Maybe
+export default Maybe;
