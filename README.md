@@ -1,5 +1,6 @@
 # JavaScript Maybe
 [![Build Status](https://travis-ci.org/nidstang/maybe.svg?branch=master)](https://travis-ci.org/nidstang/maybe)
+[![npm version](https://badge.fury.io/js/maybe-monada.svg)](https://badge.fury.io/js/maybe-monada)
 
 ## Introduction
 This package is a maybe monad that gives you a simple way to wrap your data. You always have to operate with your data inside a context. It's like a box. Your value will be in that box all the time and the only way you can transform it is to apply functions with **map** and **filter** methods.
