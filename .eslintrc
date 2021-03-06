@@ -10,6 +10,7 @@
       "indent": ["warn", 4],
       "no-shadow": "off",
       "no-confusing-arrow": ["error", {"allowParens": true}],
-      "prefer-object-spread": "off"
+      "prefer-object-spread": "off",
+      "no-unused-vars": "off"
   }
 }
