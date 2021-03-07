@@ -85,9 +85,7 @@ test('mapOr', (t) => {
         const m = Maybe.Nothing();
         const res = m.mapOr(0, double);
 
-        res.map(value => (
-            t.same(value, 0, 'Given a Nothing, a defaultValue and a function, mapOr must return Maybe defaultValue')
-        ));
+        t.same(res, 0, 'Given a Nothing, a defaultValue and a function, mapOr must return defaultValue');
     }
 
     {

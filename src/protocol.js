@@ -52,7 +52,7 @@ export default {
      *
      * @param {*} defaultValue - the value to return if Maybe a is Nothing
      * @param {function} f - function to apply if Maybe a is Just
-     * @return {*} -  `Just(f(value))` if maybe is `Just(value)` else Maybe(`defaultValue`)
+     * @return {*} -  `Just(f(value))` if maybe is `Just(value)` else `defaultValue`
      *
      */
     mapOr: abstract('mapOr'),
