@@ -72,7 +72,7 @@ test('map', (t) => {
 
         const res = a1.map(test);
 
-        t.same(res.isNothing(), true, 'test');
+        t.same(res.isNothing(), true, 'Given a Just(1) and a function that produces a null value, map should return a Nothing');
     }
 
     t.end();
