@@ -66,6 +66,39 @@ test('map', (t) => {
         t.same(result.withDefault(0), 2, 'Given a Maybe(1) and a function, map should apply the function to maybe');
     }
 
+    {
+        const a1 = Maybe.from(1);
+        const test = x => null;
+
+        const res = a1.map(test);
+
+        t.same(res.isNothing(), true, 'test');
+    }
+
+    t.end();
+});
+
+test('mapOr', (t) => {
+    const double = x => x * 2;
+
+    {
+        const m = Maybe.Nothing();
+        const res = m.mapOr(0, double);
+
+        res.map(value => (
+            t.same(value, 0, 'Given a Nothing, a defaultValue and a function, mapOr must return Maybe defaultValue')
+        ));
+    }
+
+    {
+        const m = Maybe.Just(1);
+        const res = m.mapOr(0, double);
+
+        res.map(value => (
+            t.same(value, 2, 'Given a Just, a defaultValue and a function, mapOr must return Just(f(value))')
+        ));
+    }
+
     t.end();
 });
 

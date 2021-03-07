@@ -39,10 +39,23 @@ export default {
      * map : Maybe a -> (a -> b) -> Maybe b
      *
      * @param {function} f - function to apply
-     * @return {Maybe} - Just(f(value)) if maybe is `Just`. Otherwise `Nothing`
+     * @return {Maybe} - Maybe(f(value)) if maybe is `Just`. Otherwise `Nothing`
      *
      */
     map: abstract('map'),
+
+    /*
+     * If there is a wrapped value, it applies a function to it.
+     * Otherwise it returns the provide default
+     *
+     * mapOr : Maybe a -> b -> (a -> b) -> b
+     *
+     * @param {*} defaultValue - the value to return if Maybe a is Nothing
+     * @param {function} f - function to apply if Maybe a is Just
+     * @return {*} -  `Just(f(value))` if maybe is `Just(value)` else Maybe(`defaultValue`)
+     *
+     */
+    mapOr: abstract('mapOr'),
 
     /*
      * Filters a `Maybe a` (this) by applying a function to a wrapped value
