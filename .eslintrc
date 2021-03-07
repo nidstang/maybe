@@ -11,6 +11,8 @@
       "no-shadow": "off",
       "no-confusing-arrow": ["error", {"allowParens": true}],
       "prefer-object-spread": "off",
-      "no-unused-vars": "off"
+      "no-unused-vars": "off",
+      "arrow-parens": "off",
+      "no-use-before-define": "off"
   }
 }
