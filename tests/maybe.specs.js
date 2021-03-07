@@ -100,6 +100,29 @@ test('mapOr', (t) => {
     t.end();
 });
 
+test('mapOr', (t) => {
+    const double = x => x * 2;
+    const defaultVal = () => 0;
+
+    {
+        const m = Maybe.Nothing();
+        const res = m.mapOrElse(defaultVal, double);
+
+        t.same(res, 0, 'Given a Nothing, a default function and a function, mapOrElse must return default()');
+    }
+
+    {
+        const m = Maybe.Just(1);
+        const res = m.mapOrElse(defaultVal, double);
+
+        res.map(value => (
+            t.same(value, 2, 'Given a Just, a default function  and a function, mapOrElse must return Just(f(value))')
+        ));
+    }
+
+    t.end();
+});
+
 test('safe', (t) => {
     const m = Maybe('Hello');
     const result = m.safe((value) => `${value} world`);

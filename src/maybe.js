@@ -19,6 +19,10 @@ const Nothing = () => Object.assign({}, MaybeProtocol, {
         defaultValue
     ),
 
+    mapOrElse: (defaultF, f) => (
+        defaultF()
+    ),
+
     filter: () => Nothing(),
 
     andThen: () => Nothing(),
@@ -55,6 +59,10 @@ const Just = (value) => Object.assign({}, MaybeProtocol, {
     ),
 
     mapOr: (defaultValue, f) => (
+        Maybe(f(value))
+    ),
+
+    mapOrElse: (defaultF, f) => (
         Maybe(f(value))
     ),
 

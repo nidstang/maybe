@@ -28,7 +28,7 @@ export default {
      *
      * withDefaultFn : Maybe a -> (a -> b) -> c
      *
-     * @param {function} f - the function to get the default value
+     * @param {Function} f - the function to get the default value
      * @return {*} value
      */
     withDefaultFn: abstract('withDefaultFn'),
@@ -38,7 +38,7 @@ export default {
      *
      * map : Maybe a -> (a -> b) -> Maybe b
      *
-     * @param {function} f - function to apply
+     * @param {Function} f - function to apply
      * @return {Maybe} - Maybe(f(value)) if maybe is `Just`. Otherwise `Nothing`
      *
      */
@@ -48,14 +48,29 @@ export default {
      * If there is a wrapped value, it applies a function to it.
      * Otherwise it returns the provide default
      *
+     * Arguments passed to map_or are eagerly evaluated;
+     * if you are passing the result of a function call,
+     * it is recommended to use mapOrElse, which is lazily evaluated.
+     *
      * mapOr : Maybe a -> b -> (a -> b) -> b
      *
      * @param {*} defaultValue - the value to return if Maybe a is Nothing
-     * @param {function} f - function to apply if Maybe a is Just
-     * @return {*} -  `Just(f(value))` if maybe is `Just(value)` else `defaultValue`
+     * @param {Function} f - function to apply if Maybe a is Just
+     * @return {*} - `Just(f(value))` if maybe is `Just(value)` else `defaultValue`
      *
      */
     mapOr: abstract('mapOr'),
+
+    /*
+     * Applies a function to a wrapped value if any. Otherwise computes a default value
+     *
+     * mapOrElse : Maybe a -> (b) -> (a -> b) -> b
+     *
+     * @param {Function} default - the function to compute a default value
+     * @param {Function} f - function to apply to if Maybe a is Just
+     * @return {*} `Just(f(value))` if maybe is `Just(value)` else `default()`
+     */
+    mapOrElse: abstract('mapOrElse'),
 
     /*
      * Filters a `Maybe a` (this) by applying a function to a wrapped value
@@ -63,7 +78,7 @@ export default {
      *
      * filter : Maybe a -> (a -> Bool) -> Maybe a
      *
-     * @param {function} f - predicate function to filter a `Maybe a`
+     * @param {Function} f - predicate function to filter a `Maybe a`
      * @return {Maybe} - Just(value) if fn(value) is true. Otherwise `Nothing`
      *
      */
@@ -75,7 +90,7 @@ export default {
      *
      * andThen : Maybe a -> (a -> Maybe b) -> Maybe b
      *
-     * @param {function} f - function to apply that returns a Maybe
+     * @param {Function} f - function to apply that returns a Maybe
      * @return {Maybe} - f(value) if maybe is `Just`. Otherwise `Nothing`
      *
      */
@@ -87,7 +102,7 @@ export default {
      *
      * safe : Maybe a -> (a -> b) -> b
      *
-     * @param {function} f - function to apply
+     * @param {Function} f - function to apply
      * @return {*} - value
      *
      */
