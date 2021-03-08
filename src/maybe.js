@@ -27,6 +27,8 @@ const Nothing = () => Object.assign({}, MaybeProtocol, {
 
     andThen: () => Nothing(),
 
+    and: (other) => Nothing(),
+
     safe: () => {},
 
     caseof: ({ Just, Nothing }) => {
@@ -69,6 +71,8 @@ const Just = (value) => Object.assign({}, MaybeProtocol, {
     filter: (fn) => (fn(value) ? Just(value) : Nothing()),
 
     andThen: (fn) => fn(value),
+
+    and: (other) => (!other.isNothing() ? other : Nothing()),
 
     safe: (fn) => (
         fn(value)

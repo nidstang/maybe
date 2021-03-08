@@ -300,3 +300,32 @@ test('zipWith', (t) => {
 
     t.end();
 });
+
+test('and', t => {
+    {
+        const m = Maybe.Nothing();
+        t.same(m.and(Maybe.Nothing()).isNothing(), true, 'Given a Nothing self and an Nothing other, `and` must return Nothing');
+    }
+
+    {
+        const m = Maybe.Nothing();
+        t.same(m.and(Maybe.Just(1)).isNothing(), true, 'Given a Nothing self and a Just other, `and` must return Nothing');
+    }
+
+    {
+        const m = Maybe.Just(1);
+        t.same(m.and(Maybe.Nothing()).isNothing(), true, 'Given a Just self and a Nothing other, `and` must return Nothing');
+    }
+
+    {
+        const m = Maybe.Just(1);
+        t.same(m.and(Maybe.Just(2)).isNothing(), false, 'Given a Just self and a Just other, `and` must return Just');
+    }
+
+    {
+        const m = Maybe.Just(1);
+        t.same(m.and(Maybe.Just(2)).withDefault(0), 2, 'Given a Just self and a Just 2 other, `and` must return other Just');
+    }
+
+    t.end();
+});

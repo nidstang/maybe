@@ -97,6 +97,17 @@ export default {
     andThen: abstract('andThen'),
 
     /*
+     * It returns Nothing if other is Nothing. Otherwise it returns `other`
+     *
+     * and : Maybe a -> Maybe b -> Maybe b
+     *
+     * @param {Maybe} other - the maybe to return if self and `other` are Just value
+     * @return {Maybe} - other if either self and `other` are Just and Nothing if the're not
+     *
+     */
+    and: abstract('and'),
+
+    /*
      * @deprecated since 3.0.0
      * Just like flat map but you may not need to use the value returned
      *
