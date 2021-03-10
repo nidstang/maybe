@@ -101,11 +101,21 @@ export default {
      *
      * and : Maybe a -> Maybe b -> Maybe b
      *
-     * @param {Maybe} other - the maybe to return if self and `other` are Just value
+     * @param {Maybe} other - the maybe to return if `this` and `other` are Just value
      * @return {Maybe} - other if either self and `other` are Just and Nothing if the're not
      *
      */
     and: abstract('and'),
+
+    /*
+     * Returns `this` maybe if it contains a value. Otherwise returns other
+     *
+     * or : Maybe a -> Maybe  b -> Maybe c
+     *
+     * @param {Maybe} other - the maybe to return if `this` is Nothing
+     * @return {Maybe} - other if the `this` maybe is Nothing. `this` otherwise
+     */
+    or: abstract('or'),
 
     /*
      * @deprecated since 3.0.0

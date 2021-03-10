@@ -29,6 +29,8 @@ const Nothing = () => Object.assign({}, MaybeProtocol, {
 
     and: (other) => Nothing(),
 
+    or: (other) => other,
+
     safe: () => {},
 
     caseof: ({ Just, Nothing }) => {
@@ -73,6 +75,9 @@ const Just = (value) => Object.assign({}, MaybeProtocol, {
     andThen: (fn) => fn(value),
 
     and: (other) => (!other.isNothing() ? other : Nothing()),
+    or() {
+        return this;
+    },
 
     safe: (fn) => (
         fn(value)

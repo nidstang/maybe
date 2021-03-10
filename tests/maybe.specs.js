@@ -329,3 +329,27 @@ test('and', t => {
 
     t.end();
 });
+
+test('or', t => {
+    {
+        const m = Maybe.Nothing();
+        t.same(m.or(Maybe.Nothing()).isNothing(), true, 'Given a Nothing self and an Nothing other, `or` must return Nothing');
+    }
+
+    {
+        const m = Maybe.Nothing();
+        t.same(m.or(Maybe.Just(1)).withDefault(0), 1, 'Given a Nothing self and an Just(1), `or` must return Just(1)');
+    }
+
+    {
+        const m = Maybe.Just(2);
+        t.same(m.or(Maybe.Nothing()).withDefault(0), 2, 'Given a Just(2) and a Nothing, `or` must return Just(2)');
+    }
+
+    {
+        const m = Maybe.Just(2);
+        t.same(m.or(Maybe.Just(3)).withDefault(0), 2, 'Given a Just(2) and a Just(3) `or` must return Just(2)');
+    }
+
+    t.end();
+});
