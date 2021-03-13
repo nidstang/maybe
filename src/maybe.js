@@ -3,6 +3,8 @@ import MaybeProtocol from './protocol';
 const Nothing = () => ({
     isNothing: () => true,
 
+    contains: (item) => false,
+
     withDefault: (defaultValue) => (
         defaultValue
     ),
@@ -49,6 +51,8 @@ const Nothing = () => ({
 
 const Just = (value) => ({
     isNothing: () => false,
+
+    contains: (item) => (item === value),
 
     withDefault: () => (
         value

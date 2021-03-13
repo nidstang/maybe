@@ -13,6 +13,17 @@ export default {
     isNothing: abstract('isNothing'),
 
     /*
+     * It returns `true` if `self` is Just containing the given value
+     *
+     * contains : Maybe a -> b -> Boolean
+     *
+     * @param {*} item - the value to check with
+     * @return {Boolean} - `true` if value is the same as the item inside the maybe if this is Some
+     *
+     */
+    contains: abstract('contains'),
+
+    /*
      * It unwraps the value if the maybe is Just and returns it. Otherwise it returns defaultValue
      *
      * withDefault : Maybe a -> a -> b

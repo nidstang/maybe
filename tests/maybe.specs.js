@@ -353,3 +353,22 @@ test('or', t => {
 
     t.end();
 });
+
+test('contains', t => {
+    {
+        const m = Maybe.Nothing();
+        t.same(m.contains(1), false, 'Given a Nothing and a 1, `contains` must return `false` since 1 is not in the maybe');
+    }
+
+    {
+        const m = Maybe.Just(1);
+        t.same(m.contains(1), true, 'Given a Just(1) and a 1, `contains` must return `true` since 1 is inside of');
+    }
+
+    {
+        const m = Maybe.Just(1);
+        t.same(m.contains(2), false, 'Given a Just(1) and a 2, `contains` must return `false` since 1 is not inside of');
+    }
+
+    t.end();
+});
