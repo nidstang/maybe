@@ -25,7 +25,7 @@ export default {
 
     /*
      * Because this function may panic, its use is discouraged
-     * Instead, prefer to handle the Nothing case explicitily, or use unwraps_or, unwraps_or_else,
+     * Instead, prefer to handle the Nothing case explicitily, or use unwrapOr, unwrapOrElse,
      * or withDefault
      *
      * It returns the wrapped Just value if it's Just. Otherwise rises an UnwrapException
@@ -38,11 +38,11 @@ export default {
      * @throws {UnwrapException} msg
      *
      */
-    expects: abstract('expects'),
+    expect: abstract('expect'),
 
     /*
      * Because this function may panic, its use is discouraged
-     * Instead, prefer to handle the Nothing case explicitily, or use unwrapsOr, unwrapsOrElse,
+     * Instead, prefer to handle the Nothing case explicitily, or use unwrapOr, unwrapOrElse,
      * or withDefault
      *
      * It returns the wrapped Just value if it's Just. Otherwise rises an UnwrapException
@@ -54,7 +54,7 @@ export default {
      * @throws {UnwrapException} Tried to unwrap a Nothing value
      *
      */
-    unwraps: abstract('unwraps'),
+    unwrap: abstract('unwrap'),
 
     /*
      * It returns the wrapped Just value or a provided default

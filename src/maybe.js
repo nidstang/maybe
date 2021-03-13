@@ -10,15 +10,15 @@ const Nothing = () => ({
 
     contains: (item) => false,
 
-    expects(msg) {
+    expect(msg) {
         throw new UnwrapException(msg);
     },
 
-    unwraps() {
+    unwrap() {
         throw new UnwrapException('Tried to unwrap a Nothing value');
     },
 
-    unwrapsOr: (defaultValue) => defaultValue,
+    unwrapOr: (defaultValue) => defaultValue,
 
     withDefault: (defaultValue) => (
         defaultValue
@@ -69,11 +69,11 @@ const Just = (value) => ({
 
     contains: (item) => (item === value),
 
-    expects: (msg) => value,
+    expect: (msg) => value,
 
-    unwraps: () => value,
+    unwrap: () => value,
 
-    unwrapsOr: () => value,
+    unwrapOr: () => value,
 
     withDefault: () => (
         value

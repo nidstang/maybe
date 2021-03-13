@@ -373,15 +373,15 @@ test('contains', t => {
     t.end();
 });
 
-test('expects', t => {
+test('expect', t => {
     {
         const m = Maybe.Nothing();
 
         try {
-            const value = m.expects('There is not value');
+            const value = m.expect('There is not value');
             t.fail();
         } catch (e) {
-            t.same(e.name, 'UnwrapException', 'Given a Nothing and a msg, `expects` must raise an UnwrapException');
+            t.same(e.name, 'UnwrapException', 'Given a Nothing and a msg, `expect` must raise an UnwrapException');
         }
     }
 
@@ -389,10 +389,10 @@ test('expects', t => {
         const m = Maybe.Nothing();
 
         try {
-            const value = m.expects('There is not value');
+            const value = m.expect('There is not value');
             t.fail('Given a Nothing, `expects` must raise an exception');
         } catch (e) {
-            t.same(e.message, 'There is not value', 'Given a Nothing and a msg, `expects` must raise an UnwrapException with the given msg');
+            t.same(e.message, 'There is not value', 'Given a Nothing and a msg, `expect` must raise an UnwrapException with the given msg');
         }
     }
 
@@ -400,8 +400,8 @@ test('expects', t => {
         const m = Maybe.Just('hello world');
 
         try {
-            const value = m.expects('There is not value');
-            t.same(value, 'hello world', 'Given a Just and a msg, `expects` must return the wrapped value');
+            const value = m.expect('There is not value');
+            t.same(value, 'hello world', 'Given a Just and a msg, `expect` must return the wrapped value');
         } catch (e) {
             t.fail('Given a Just, `expect` must not raise an exception');
         }
@@ -410,15 +410,15 @@ test('expects', t => {
     t.end();
 });
 
-test('unwraps', t => {
+test('unwrap', t => {
     {
         const m = Maybe.Nothing();
 
         try {
-            const value = m.unwraps();
+            const value = m.unwrap();
             t.fail();
         } catch (e) {
-            t.same(e.name, 'UnwrapException', 'Given a Nothing, `unwraps` must raise an UnwrapException');
+            t.same(e.name, 'UnwrapException', 'Given a Nothing, `unwrap` must raise an UnwrapException');
         }
     }
 
@@ -426,8 +426,8 @@ test('unwraps', t => {
         const m = Maybe.Nothing();
 
         try {
-            const value = m.unwraps();
-            t.fail('Given a Nothing, `unwraps` must raise an exception');
+            const value = m.unwrap();
+            t.fail('Given a Nothing, `unwrap` must raise an exception');
         } catch (e) {
             t.same(e.message, 'Tried to unwrap a Nothing value', 'Given a Nothing, `unwraps` must raise an UnwrapException');
         }
@@ -437,8 +437,8 @@ test('unwraps', t => {
         const m = Maybe.Just('hello world');
 
         try {
-            const value = m.unwraps('There is not value');
-            t.same(value, 'hello world', 'Given a Just and a msg, `unwraps` must return the wrapped value');
+            const value = m.unwrap('There is not value');
+            t.same(value, 'hello world', 'Given a Just and a msg, `unwrap` must return the wrapped value');
         } catch (e) {
             t.fail('Given a Just, `unwraps` must not raise an exception');
         }
@@ -447,15 +447,15 @@ test('unwraps', t => {
     t.end();
 });
 
-test('unwrapsOr', t => {
+test('unwrapOr', t => {
     {
         const m = Maybe.Nothing();
-        t.same(m.unwrapsOr(2), 2, 'Given a Nothing maybe and a default value of 2, `unwrap_or` must return 2');
+        t.same(m.unwrapOr(2), 2, 'Given a Nothing maybe and a default value of 2, `unwrap_or` must return 2');
     }
 
     {
         const m = Maybe.Just(2);
-        t.same(m.unwrapsOr(1), 2, 'Given a Just()  maybe and a default value of 1, `unwrap_or` must return 2');
+        t.same(m.unwrapOr(1), 2, 'Given a Just()  maybe and a default value of 1, `unwrap_or` must return 2');
     }
 
     t.end();
