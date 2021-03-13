@@ -24,6 +24,10 @@ export default {
     contains: abstract('contains'),
 
     /*
+     * Because this function may panic, its use is discouraged
+     * Instead, prefer to handle the Nothing case explicitily, or use unwraps_or, unwraps_or_else,
+     * or withDefault
+     *
      * It returns the wrapped Just value if it's Just. Otherwise rises an UnwrapException
      *
      * (!) impure function
@@ -35,6 +39,22 @@ export default {
      *
      */
     expects: abstract('expects'),
+
+    /*
+     * Because this function may panic, its use is discouraged
+     * Instead, prefer to handle the Nothing case explicitily, or use unwraps_or, unwraps_or_else,
+     * or withDefault
+     *
+     * It returns the wrapped Just value if it's Just. Otherwise rises an UnwrapException
+     *
+     * (!) impure function
+     * (!) a try/catch is a must to use this function!
+     *
+     * @return {*} the wrapped value if it's Just
+     * @throws {UnwrapException} Tried to unwrap a Nothing value
+     *
+     */
+    unwraps: abstract('unwraps'),
 
     /*
      * It unwraps the value if the maybe is Just and returns it. Otherwise it returns defaultValue

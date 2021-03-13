@@ -409,3 +409,40 @@ test('expects', t => {
 
     t.end();
 });
+
+test('unwraps', t => {
+    {
+        const m = Maybe.Nothing();
+
+        try {
+            const value = m.unwraps();
+            t.fail();
+        } catch (e) {
+            t.same(e.name, 'UnwrapException', 'Given a Nothing, `unwraps` must raise an UnwrapException');
+        }
+    }
+
+    {
+        const m = Maybe.Nothing();
+
+        try {
+            const value = m.unwraps();
+            t.fail('Given a Nothing, `unwraps` must raise an exception');
+        } catch (e) {
+            t.same(e.message, 'Tried to unwrap a Nothing value', 'Given a Nothing, `unwraps` must raise an UnwrapException');
+        }
+    }
+
+    {
+        const m = Maybe.Just('hello world');
+
+        try {
+            const value = m.unwraps('There is not value');
+            t.same(value, 'hello world', 'Given a Just and a msg, `unwraps` must return the wrapped value');
+        } catch (e) {
+            t.fail('Given a Just, `unwraps` must not raise an exception');
+        }
+    }
+
+    t.end();
+});
