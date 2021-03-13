@@ -446,3 +446,17 @@ test('unwraps', t => {
 
     t.end();
 });
+
+test('unwrapsOr', t => {
+    {
+        const m = Maybe.Nothing();
+        t.same(m.unwrapsOr(2), 2, 'Given a Nothing maybe and a default value of 2, `unwrap_or` must return 2');
+    }
+
+    {
+        const m = Maybe.Just(2);
+        t.same(m.unwrapsOr(1), 2, 'Given a Just()  maybe and a default value of 1, `unwrap_or` must return 2');
+    }
+
+    t.end();
+});

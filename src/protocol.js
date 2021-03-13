@@ -42,7 +42,7 @@ export default {
 
     /*
      * Because this function may panic, its use is discouraged
-     * Instead, prefer to handle the Nothing case explicitily, or use unwraps_or, unwraps_or_else,
+     * Instead, prefer to handle the Nothing case explicitily, or use unwrapsOr, unwrapsOrElse,
      * or withDefault
      *
      * It returns the wrapped Just value if it's Just. Otherwise rises an UnwrapException
@@ -55,6 +55,20 @@ export default {
      *
      */
     unwraps: abstract('unwraps'),
+
+    /*
+     * It returns the wrapped Just value or a provided default
+     * Arguments passed to map_or are eagerly evaluated;
+     * if you are passing the result of a function call,
+     * it is recommended to use unwrapOrElse, which is lazily evaluated.
+     *
+     * unwrapOr : Maybe a -> b -> c
+     *
+     * @param {*} defaultValue - default value to be returned if the maybe is Nothing
+     * @return {*} value if maybe is Just. Otherwise default is returned
+     *
+     */
+    unwrapOr: abstract('unwrapOr'),
 
     /*
      * It unwraps the value if the maybe is Just and returns it. Otherwise it returns defaultValue

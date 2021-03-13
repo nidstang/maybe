@@ -18,6 +18,8 @@ const Nothing = () => ({
         throw new UnwrapException('Tried to unwrap a Nothing value');
     },
 
+    unwrapsOr: (defaultValue) => defaultValue,
+
     withDefault: (defaultValue) => (
         defaultValue
     ),
@@ -70,6 +72,8 @@ const Just = (value) => ({
     expects: (msg) => value,
 
     unwraps: () => value,
+
+    unwrapsOr: () => value,
 
     withDefault: () => (
         value
