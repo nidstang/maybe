@@ -1,9 +1,18 @@
 import MaybeProtocol from './protocol';
 
+function UnwrapException(msg) {
+    this.name = 'UnwrapException';
+    this.message = msg;
+}
+
 const Nothing = () => ({
     isNothing: () => true,
 
     contains: (item) => false,
+
+    expects(msg) {
+        throw new UnwrapException(msg);
+    },
 
     withDefault: (defaultValue) => (
         defaultValue
@@ -53,6 +62,8 @@ const Just = (value) => ({
     isNothing: () => false,
 
     contains: (item) => (item === value),
+
+    expects: (msg) => value,
 
     withDefault: () => (
         value

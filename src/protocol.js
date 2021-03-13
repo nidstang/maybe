@@ -24,6 +24,19 @@ export default {
     contains: abstract('contains'),
 
     /*
+     * It returns the wrapped Just value if it's Just. Otherwise rises an UnwrapException
+     *
+     * (!) impure function
+     * (!) a try/catch is a must to use this function!
+     *
+     * @param {string} msg - message for UnwrapException
+     * @return {*} the wrapped value if it's Just
+     * @throws {UnwrapException} msg
+     *
+     */
+    expects: abstract('expects'),
+
+    /*
      * It unwraps the value if the maybe is Just and returns it. Otherwise it returns defaultValue
      *
      * withDefault : Maybe a -> a -> b

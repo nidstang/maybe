@@ -372,3 +372,40 @@ test('contains', t => {
 
     t.end();
 });
+
+test('expects', t => {
+    {
+        const m = Maybe.Nothing();
+
+        try {
+            const value = m.expects('There is not value');
+            t.fail();
+        } catch (e) {
+            t.same(e.name, 'UnwrapException', 'Given a Nothing and a msg, `expects` must raise an UnwrapException');
+        }
+    }
+
+    {
+        const m = Maybe.Nothing();
+
+        try {
+            const value = m.expects('There is not value');
+            t.fail('Given a Nothing, `expects` must raise an exception');
+        } catch (e) {
+            t.same(e.message, 'There is not value', 'Given a Nothing and a msg, `expects` must raise an UnwrapException with the given msg');
+        }
+    }
+
+    {
+        const m = Maybe.Just('hello world');
+
+        try {
+            const value = m.expects('There is not value');
+            t.same(value, 'hello world', 'Given a Just and a msg, `expects` must return the wrapped value');
+        } catch (e) {
+            t.fail('Given a Just, `expect` must not raise an exception');
+        }
+    }
+
+    t.end();
+});
