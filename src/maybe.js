@@ -20,6 +20,8 @@ const Nothing = () => ({
 
     unwrapOr: (defaultValue) => defaultValue,
 
+    unwrapOrElse: (f) => f(),
+
     withDefault: (defaultValue) => (
         defaultValue
     ),
@@ -74,6 +76,8 @@ const Just = (value) => ({
     unwrap: () => value,
 
     unwrapOr: () => value,
+
+    unwrapOrElse: () => value,
 
     withDefault: () => (
         value

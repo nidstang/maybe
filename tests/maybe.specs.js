@@ -450,12 +450,40 @@ test('unwrap', t => {
 test('unwrapOr', t => {
     {
         const m = Maybe.Nothing();
-        t.same(m.unwrapOr(2), 2, 'Given a Nothing maybe and a default value of 2, `unwrap_or` must return 2');
+        t.same(m.unwrapOr(2), 2, 'Given a Nothing maybe and a default value of 2, `unwrapOr` must return 2');
     }
 
     {
         const m = Maybe.Just(2);
-        t.same(m.unwrapOr(1), 2, 'Given a Just()  maybe and a default value of 1, `unwrap_or` must return 2');
+        t.same(m.unwrapOr(1), 2, 'Given a Just() maybe and a default value of 1, `unwrapOr` must return 2');
+    }
+
+    t.end();
+});
+
+test('unwrapOrElse', t => {
+    {
+        const m = Maybe.Nothing();
+        t.same(m.unwrapOrElse(() => 2), 2, 'Given a Nothing maybe and a function which computes to 2, `unwrapOr` must return 2');
+    }
+
+    {
+        const m = Maybe.Just(2);
+        t.same(m.unwrapOrElse(() => 1), 2, 'Given a Just() maybe a function which computes to 1, `unwrapOr` must return 2');
+    }
+
+    t.end();
+});
+
+test('withDefault', t => {
+    {
+        const m = Maybe.Nothing();
+        t.same(m.withDefault(2), 2, 'Given a Nothing maybe and a default value of 2, `withDefault` must return 2');
+    }
+
+    {
+        const m = Maybe.Just(2);
+        t.same(m.withDefault(1), 2, 'Given a Just()  maybe and a default value of 1, `withDefault` must return 2');
     }
 
     t.end();

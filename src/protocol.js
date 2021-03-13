@@ -71,6 +71,18 @@ export default {
     unwrapOr: abstract('unwrapOr'),
 
     /*
+     * It returns the wrapped Just value or computes it from f
+     *
+     * unwrapOrElse : Maybe a -> (b) -> c
+     *
+     * @param {Function} f for computing a default value if maybe is Nothing
+     * @return {*} value if maybe is Just. Otherwise computes defaultValue from f
+     *
+     */
+    unwrapOrElse: abstract('unwrapOrElse'),
+
+    /*
+     * @deprecated favor unwrapOr
      * It unwraps the value if the maybe is Just and returns it. Otherwise it returns defaultValue
      *
      * withDefault : Maybe a -> a -> b
