@@ -34,6 +34,8 @@ const Nothing = () => ({
         Nothing()
     ),
 
+    map2: (other, f) => Nothing(),
+
     mapOr: (defaultValue, f) => (
         defaultValue
     ),
@@ -64,6 +66,8 @@ const Nothing = () => ({
     zipWith: (other, fn) => (
         Nothing()
     ),
+
+    zipN: (...others) => Nothing(),
 });
 
 const Just = (value) => ({
@@ -90,6 +94,10 @@ const Just = (value) => ({
     map: (fn) => (
         Maybe(fn(value))
     ),
+
+    map2(other, f) {
+        return this.zip(other).map(([a, b]) => f(a, b));
+    },
 
     mapOr: (defaultValue, f) => (
         Maybe(f(value))
@@ -135,6 +143,26 @@ const Maybe = (value) => {
 
     return Just(value);
 };
+
+/*
+ * It lifts an unary function that works with `a` type to `Maybe a` and `Maybe b`
+ *
+ * Maybe.lift : (a -> b) -> (Maybe a -> Maybe b)
+ *
+ * @param {Function} the unary function to lift
+ * @return {Function} the unary lifted function
+ */
+Maybe.lift = (f) => (ma) => ma.map(f);
+
+/*
+ * It lifts a binary function that works with `a` and `b` types to `Maybe a`, `Maybe b` `Maybe c`
+ *
+ * Maybe.lift : (a -> b -> c) -> (Maybe a -> Maybe b -> Maybe c)
+ *
+ * @param {Function} the binary function to lift
+ * @return {Function} the lifted binary function
+ */
+Maybe.lift2 = (f) => (ma, mb) => ma.map2(mb, f);
 
 Maybe.Just = value => Object.assign({}, MaybeProtocol, Just(value));
 Maybe.Nothing = () => Object.assign({}, MaybeProtocol, Nothing());

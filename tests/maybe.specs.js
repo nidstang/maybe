@@ -488,3 +488,80 @@ test('withDefault', t => {
 
     t.end();
 });
+
+test('map2', t => {
+    const add = (a, b) => a + b;
+
+    {
+        const m = Maybe.Nothing();
+        t.same(m.map2(Maybe.Just(1), add).isNothing(), true, 'Given a Nothing, a Just and a f, map2 must return Nothing');
+    }
+
+    {
+        const m = Maybe.Just(1);
+        t.same(m.map2(Maybe.Nothing(), add).isNothing(), true, 'Given a Just, a Nothing and a f, map2 must return Nothing');
+    }
+
+    {
+        const m = Maybe.Just(1);
+        const res = m.map2(Maybe.Just(2), add);
+        t.same(res.isNothing(), false, 'Given a Just, another Just and a f, map2 must return Just');
+        t.same(res.unwrapOr(0), 3, 'Given a Just 1, Just 2 and an add function, map2 must return a Just with the result within');
+    }
+
+    t.end();
+});
+
+test('Maybe.lift', t => {
+    const m1 = Maybe.Just(1);
+    const nothing = Maybe.Nothing();
+    const double = x => x * 2;
+    const liftedF = Maybe.lift(double);
+
+    {
+        const res = liftedF(m1);
+
+        t.same(res.contains(2), true, 'Given a Just 1, liftedF must contain 2');
+    }
+
+    {
+        const res = liftedF(nothing);
+
+        t.same(res.isNothing(), true, 'Given a Nothing, liftedF must return Nothing');
+    }
+
+    t.end();
+});
+
+test('Maybe.lift2', t => {
+    const m1 = Maybe.Just(2);
+    const nothing = Maybe.Nothing();
+    const add = (a, b) => a + b;
+    const liftedF = Maybe.lift2(add);
+
+    {
+        const res = liftedF(m1, m1);
+
+        t.same(res.contains(4), true, 'Given a Just 2 and a Just 2, liftedF must contain 4');
+    }
+
+    {
+        const res = liftedF(nothing, nothing);
+
+        t.same(res.isNothing(), true, 'Given a Nothing and another Nothing, liftedF must return Nothing');
+    }
+
+    {
+        const res = liftedF(nothing, m1);
+
+        t.same(res.isNothing(), true, 'Given a Nothing and Just, liftedF must return Nothing');
+    }
+
+    {
+        const res = liftedF(m1, nothing);
+
+        t.same(res.isNothing(), true, 'Given a Just and a Nothing, liftedF must return Nothing');
+    }
+
+    t.end();
+});

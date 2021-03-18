@@ -143,6 +143,19 @@ export default {
     mapOrElse: abstract('mapOrElse'),
 
     /*
+     * Applies f to `this` and other
+     * This is an alias over zip and then apply a two params function
+     *
+     * map2 : Maybe a -> Maybe b -> (a -> b -> c) -> Maybe c
+     *
+     * @param {Maybe} other - other maybe to be passed to f
+     * @param {Function} f - two params function to apply to
+     * @return {Maybe} Just(f(value, other.value)) if maybe is Just else Nothing
+     *
+     */
+    map2: abstract('map2'),
+
+    /*
      * Filters a `Maybe a` (this) by applying a function to a wrapped value
      * that matchs the predicate
      *
@@ -249,5 +262,4 @@ export default {
      *
      */
     zipWith: abstract('zipWith'),
-
 };
