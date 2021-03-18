@@ -7,10 +7,13 @@
   "scripts": {
     "lint": "eslint ./src",
     "lint-fix": "eslint ./src --fix",
-    "transpile": "webpack --config buildTools/webpack.config.js",
-    "test": "tape -r @babel/register tests/maybe.specs.js",
+    "build": "webpack --config buildTools/webpack.config.js",
+    "test": "tape -r @babel/register tests/dev.js",
+    "test-node-pro": "tape tests/node-pro.js",
+    "test-web-pro": "tape tests/web-pro.js",
+    "watch": "npm-watch",
     "preversion": "npm test",
-    "version": "npm run lint && npm run transpile && git add -A dist",
+    "version": "npm run lint && npm run build && git add -A dist",
     "postversion": "git push origin dev && git push --tags"
   },
   "keywords": [
@@ -30,10 +33,15 @@
     "eslint": "^7.21.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.22.1",
+    "npm-watch": "^0.7.0",
     "tape": "^5.2.2",
     "uglifyjs-webpack-plugin": "^2.1.2",
     "webpack": "^4.30.0",
     "webpack-cli": "^3.3.2",
     "webpack-merge": "^4.2.1"
+  },
+
+  "watch": {
+      "test": "{src,tests}/*.js"
   }
 }
