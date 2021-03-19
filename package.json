@@ -1,6 +1,6 @@
 {
   "name": "maybe-monada",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "A maybe monad in JavaScript",
   "homepage": "https://github.com/nidstang/maybe",
   "main": "dist/maybe.node.js",
@@ -20,7 +20,7 @@
     "postversion": "git push origin dev && git push --tags"
   },
   "directories": {
-      "doc": "./docs/api.md"
+    "doc": "./docs/api.md"
   },
   "keywords": [
     "maybe",
