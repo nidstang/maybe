@@ -2,13 +2,16 @@
   "name": "maybe-monada",
   "version": "2.0.4",
   "description": "A maybe monad in JavaScript",
+  "homepage": "https://github.com/nidstang/maybe",
   "main": "dist/maybe.node.js",
   "browser": "dist/maybe.js",
   "scripts": {
     "lint": "eslint ./src",
     "lint-fix": "eslint ./src --fix",
     "build": "webpack --config buildTools/webpack.config.js",
+    "docs": "./buildTools/genDocs.sh",
     "test": "tape -r @babel/register tests/dev.js",
+    "test-pro": "npm run test-node-pro && npm run test-web-pro",
     "test-node-pro": "tape tests/node-pro.js",
     "test-web-pro": "tape tests/web-pro.js",
     "watch": "npm-watch",
@@ -33,6 +36,7 @@
     "eslint": "^7.21.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.22.1",
+    "jsdoc-to-markdown": "^7.0.0",
     "npm-watch": "^0.7.0",
     "tape": "^5.2.2",
     "uglifyjs-webpack-plugin": "^2.1.2",
@@ -40,8 +44,7 @@
     "webpack-cli": "^3.3.2",
     "webpack-merge": "^4.2.1"
   },
-
   "watch": {
-      "test": "{src,tests}/*.js"
+    "test": "{src,tests}/*.js"
   }
 }
