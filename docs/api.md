@@ -37,11 +37,8 @@ it is recommended to use unwrapOrElse, which is lazily evaluated.</p>
 </dd>
 <dt><del><a href="#withDefault">withDefault</a> ⇒ <code>*</code></del></dt>
 <dd></dd>
-<dt><a href="#withDefaultFn">withDefaultFn</a> ⇒ <code>*</code></dt>
-<dd><p>It unwraps the value if the maybe is Just and returns it.
-Otherwise it calls fn and return its result</p>
-<p>withDefaultFn : Maybe a -&gt; (a -&gt; b) -&gt; c</p>
-</dd>
+<dt><del><a href="#withDefaultFn">withDefaultFn</a> ⇒ <code>*</code></del></dt>
+<dd></dd>
 <dt><a href="#map">map</a> ⇒ <code>Maybe</code></dt>
 <dd><p>Maps a <code>Maybe a</code> (this) to <code>Maybe b</code> by applying a function to a wrapped value</p>
 <p>map : Maybe a -&gt; (a -&gt; b) -&gt; Maybe b</p>
@@ -59,7 +56,7 @@ it is recommended to use mapOrElse, which is lazily evaluated.</p>
 <p>mapOrElse : Maybe a -&gt; (b) -&gt; (a -&gt; b) -&gt; b</p>
 </dd>
 <dt><a href="#map2">map2</a> ⇒ <code>Maybe</code></dt>
-<dd><p>Applies f to <code>this</code> and other
+<dd><p>Applies f to <code>this</code> and other.
 This is an alias over zip and then apply a two params function</p>
 <p>map2 : Maybe a -&gt; Maybe b -&gt; (a -&gt; b -&gt; c) -&gt; Maybe c</p>
 </dd>
@@ -206,11 +203,8 @@ unwrapOrElse : Maybe a -> (b) -> c
 
 <a name="withDefaultFn"></a>
 
-## withDefaultFn ⇒ <code>\*</code>
-It unwraps the value if the maybe is Just and returns it.
-Otherwise it calls fn and return its result
-
-withDefaultFn : Maybe a -> (a -> b) -> c
+## ~~withDefaultFn ⇒ <code>\*</code>~~
+***Deprecated***
 
 **Returns**: <code>\*</code> - value  
 
@@ -267,7 +261,7 @@ mapOrElse : Maybe a -> (b) -> (a -> b) -> b
 <a name="map2"></a>
 
 ## map2 ⇒ <code>Maybe</code>
-Applies f to `this` and other
+Applies f to `this` and other.
 This is an alias over zip and then apply a two params function
 
 map2 : Maybe a -> Maybe b -> (a -> b -> c) -> Maybe c

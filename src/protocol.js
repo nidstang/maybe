@@ -92,6 +92,7 @@ const unwrapOrElse = abstract('unwrapOrElse');
 const withDefault = abstract('withDefault');
 
 /**
+ * @deprecated
  * It unwraps the value if the maybe is Just and returns it.
  * Otherwise it calls fn and return its result
  *
@@ -142,7 +143,7 @@ const mapOr = abstract('mapOr');
 const mapOrElse = abstract('mapOrElse');
 
 /**
- * Applies f to `this` and other
+ * Applies f to `this` and other.
  * This is an alias over zip and then apply a two params function
  *
  * map2 : Maybe a -> Maybe b -> (a -> b -> c) -> Maybe c
@@ -262,6 +263,27 @@ const zip = abstract('zip');
  */
 const zipWith = abstract('zipWith');
 
+const Maybe = {};
+/**
+ * It lifts an unary function that works with `a` type to `Maybe a` and `Maybe b`
+ *
+ * Maybe.lift : (a -> b) -> (Maybe a -> Maybe b)
+ *
+ * @param {Function} the unary function to lift
+ * @return {Function} the unary lifted function
+ */
+Maybe.lift = abstract('lift');
+
+/**
+ * It lifts a binary function that works with `a` and `b` types to `Maybe a`, `Maybe b` `Maybe c`
+ *
+ * Maybe.lift : (a -> b -> c) -> (Maybe a -> Maybe b -> Maybe c)
+ *
+ * @param {Function} the binary function to lift
+ * @return {Function} the lifted binary function
+ */
+Maybe.lift2 = abstract('lift2');
+
 export default {
     isNothing,
     contains,
@@ -271,6 +293,7 @@ export default {
     unwrapOrElse,
     withDefault,
     withDefaultFn,
+    map,
     mapOr,
     mapOrElse,
     map2,
