@@ -87,7 +87,7 @@ caseof takes a just-nothing pattern which is an object and looks like:
 { Just : (a -&gt; b), Nothing: (b) }</p>
 <p>caseof : Maybe a -&gt; ({ Just: (a -&gt; b), Nothing: (b) }) -&gt; b</p>
 <p>withDefault function can be made from caseof:</p>
-<pre><code>const withDefault = maybe =&gt; defaultValue =&gt; caseof({
+<pre><code class="language-javascript">const withDefault = maybe =&gt; defaultValue =&gt; caseof({
   Just: value =&gt; value,
   Nothing: () =&gt; defaultValue,
 });
@@ -116,7 +116,7 @@ caseof takes a just-nothing pattern which is an object and looks like:
 ## isNothing ⇒ <code>boolean</code>
 It returns 'true' if the maybe is Just
 
-**Returns**: <code>boolean</code> - - true if the wrapped value is Just, false otherwise  
+**Returns**: <code>boolean</code> - true if the wrapped value is Just, false otherwise  
 <a name="contains"></a>
 
 ## contains ⇒ <code>Boolean</code>
@@ -124,7 +124,7 @@ It returns `true` if `self` is Just containing the given value
 
 contains : Maybe a -> b -> Boolean
 
-**Returns**: <code>Boolean</code> - - `true` if value is the same as the item inside the maybe if this is Some  
+**Returns**: <code>Boolean</code> - `true` if value is the same as the item inside the maybe if this is Some  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -227,7 +227,7 @@ Maps a `Maybe a` (this) to `Maybe b` by applying a function to a wrapped value
 
 map : Maybe a -> (a -> b) -> Maybe b
 
-**Returns**: <code>Maybe</code> - - Maybe(f(value)) if maybe is `Just`. Otherwise `Nothing`  
+**Returns**: <code>Maybe</code> - Maybe(f(value)) if maybe is `Just`. Otherwise `Nothing`  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -245,7 +245,7 @@ it is recommended to use mapOrElse, which is lazily evaluated.
 
 mapOr : Maybe a -> b -> (a -> b) -> b
 
-**Returns**: <code>\*</code> - - `Just(f(value))` if maybe is `Just(value)` else `defaultValue`  
+**Returns**: <code>\*</code> - `Just(f(value))` if maybe is `Just(value)` else `defaultValue`  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -289,7 +289,7 @@ that matchs the predicate
 
 filter : Maybe a -> (a -> Bool) -> Maybe a
 
-**Returns**: <code>Maybe</code> - - Just(value) if fn(value) is true. Otherwise `Nothing`  
+**Returns**: <code>Maybe</code> - Just(value) if fn(value) is true. Otherwise `Nothing`  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -303,7 +303,7 @@ that returns a Maybe to a wrapped value
 
 andThen : Maybe a -> (a -> Maybe b) -> Maybe b
 
-**Returns**: <code>Maybe</code> - - f(value) if maybe is `Just`. Otherwise `Nothing`  
+**Returns**: <code>Maybe</code> - Just(f(value)) if maybe is `Just`. Otherwise `Nothing`  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -316,7 +316,7 @@ It returns Nothing if other is Nothing. Otherwise it returns `other`
 
 and : Maybe a -> Maybe b -> Maybe b
 
-**Returns**: <code>Maybe</code> - - other if either self and `other` are Just and Nothing if the're not  
+**Returns**: <code>Maybe</code> - other if either self and `other` are Just and Nothing if the're not  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -329,7 +329,7 @@ Returns `this` maybe if it contains a value. Otherwise returns other
 
 or : Maybe a -> Maybe  b -> Maybe c
 
-**Returns**: <code>Maybe</code> - - other if the `this` maybe is Nothing. `this` otherwise  
+**Returns**: <code>Maybe</code> - other if the `this` maybe is Nothing. `this` otherwise  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -358,7 +358,7 @@ caseof : Maybe a -> ({ Just: (a -> b), Nothing: (b) }) -> b
 
 withDefault function can be made from caseof:
 
-```
+```javascript
 const withDefault = maybe => defaultValue => caseof({
   Just: value => value,
   Nothing: () => defaultValue,
@@ -368,9 +368,9 @@ const withDefault = maybe => defaultValue => caseof({
 
 **Returns**: <code>\*</code> - value  
 
-| Type | Description |
-| --- | --- |
-| <code>object</code> | just-nothing object pattern |
+| Param | Type | Description |
+| --- | --- | --- |
+| object | <code>object</code> | just-nothing object pattern |
 
 <a name="zip"></a>
 
@@ -379,12 +379,12 @@ Zips `this` with another Maybe
 
 zip : Maybe a -> Maybe b -> Maybe([a, b])
 
-**Returns**: <code>Maybe</code> - value - if `Maybe a` and `Maybe b` are Just, it returns `Maybe [a, b]`
+**Returns**: <code>Maybe</code> - if `Maybe a` and `Maybe b` are Just, it returns `Maybe [a, b]`
 Otherwise returns Nothing  
 
-| Param | Description |
-| --- | --- |
-| maybe | to zip with |
+| Param | Type | Description |
+| --- | --- | --- |
+| maybe | <code>Maybe</code> | to zip with |
 
 <a name="zipWith"></a>
 
@@ -393,13 +393,13 @@ Zips this and another Maybe with function f
 
 zipWith : Maybe a -> Maybe b -> ([a, b] -> c) -> Maybe c
 
-**Returns**: <code>Maybe</code> - value - If this is `Just a` and other is `Just b`,
+**Returns**: <code>Maybe</code> - If this is `Just a` and other is `Just b`,
 it returns `Maybe(f([a, b]))`  
 
-| Param | Description |
-| --- | --- |
-| maybe | to zip with |
-| f | to apply to the zipped maybe values |
+| Param | Type | Description |
+| --- | --- | --- |
+| maybe | <code>Maybe</code> | to zip with |
+| f | <code>function</code> | to apply to the zipped maybe values |
 
 <a name="lift"></a>
 
@@ -412,7 +412,7 @@ Maybe.lift : (a -> b) -> (Maybe a -> Maybe b)
 
 | Param | Type | Description |
 | --- | --- | --- |
-| the | <code>function</code> | unary function to lift |
+| f | <code>function</code> | the unary function to lift |
 
 <a name="lift2"></a>
 
@@ -425,5 +425,5 @@ Maybe.lift : (a -> b -> c) -> (Maybe a -> Maybe b -> Maybe c)
 
 | Param | Type | Description |
 | --- | --- | --- |
-| the | <code>function</code> | binary function to lift |
+| f | <code>function</code> | the binary function to lift |
 

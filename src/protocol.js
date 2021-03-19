@@ -7,7 +7,7 @@ function abstract(method) {
 /**
  * It returns 'true' if the maybe is Just
  *
- * @return {boolean} - true if the wrapped value is Just, false otherwise
+ * @return {boolean} true if the wrapped value is Just, false otherwise
  */
 const isNothing = abstract('isNothing');
 
@@ -17,7 +17,7 @@ const isNothing = abstract('isNothing');
  * contains : Maybe a -> b -> Boolean
  *
  * @param {*} item - the value to check with
- * @return {Boolean} - `true` if value is the same as the item inside the maybe if this is Some
+ * @return {Boolean} `true` if value is the same as the item inside the maybe if this is Some
  *
  */
 const contains = abstract('contains');
@@ -74,7 +74,7 @@ const unwrapOr = abstract('unwrapOr');
  *
  * unwrapOrElse : Maybe a -> (b) -> c
  *
- * @param {Function} f for computing a default value if maybe is Nothing
+ * @param {Function} f - for computing a default value if maybe is Nothing
  * @return {*} value if maybe is Just. Otherwise computes defaultValue from f
  *
  */
@@ -109,7 +109,7 @@ const withDefaultFn = abstract('withDefaultFn');
  * map : Maybe a -> (a -> b) -> Maybe b
  *
  * @param {Function} f - function to apply
- * @return {Maybe} - Maybe(f(value)) if maybe is `Just`. Otherwise `Nothing`
+ * @return {Maybe} Maybe(f(value)) if maybe is `Just`. Otherwise `Nothing`
  *
  */
 const map = abstract('map');
@@ -126,7 +126,7 @@ const map = abstract('map');
  *
  * @param {*} defaultValue - the value to return if Maybe a is Nothing
  * @param {Function} f - function to apply if Maybe a is Just
- * @return {*} - `Just(f(value))` if maybe is `Just(value)` else `defaultValue`
+ * @return {*} `Just(f(value))` if maybe is `Just(value)` else `defaultValue`
  *
  */
 const mapOr = abstract('mapOr');
@@ -162,7 +162,7 @@ const map2 = abstract('map2');
  * filter : Maybe a -> (a -> Bool) -> Maybe a
  *
  * @param {Function} f - predicate function to filter a `Maybe a`
- * @return {Maybe} - Just(value) if fn(value) is true. Otherwise `Nothing`
+ * @return {Maybe} Just(value) if fn(value) is true. Otherwise `Nothing`
  *
  */
 const filter = abstract('filter');
@@ -174,7 +174,7 @@ const filter = abstract('filter');
  * andThen : Maybe a -> (a -> Maybe b) -> Maybe b
  *
  * @param {Function} f - function to apply that returns a Maybe
- * @return {Maybe} - f(value) if maybe is `Just`. Otherwise `Nothing`
+ * @return {Maybe} Just(f(value)) if maybe is `Just`. Otherwise `Nothing`
  *
  */
 const andThen = abstract('andThen');
@@ -185,7 +185,7 @@ const andThen = abstract('andThen');
  * and : Maybe a -> Maybe b -> Maybe b
  *
  * @param {Maybe} other - the maybe to return if `this` and `other` are Just value
- * @return {Maybe} - other if either self and `other` are Just and Nothing if the're not
+ * @return {Maybe} other if either self and `other` are Just and Nothing if the're not
  *
  */
 const and = abstract('and');
@@ -196,7 +196,7 @@ const and = abstract('and');
  * or : Maybe a -> Maybe  b -> Maybe c
  *
  * @param {Maybe} other - the maybe to return if `this` is Nothing
- * @return {Maybe} - other if the `this` maybe is Nothing. `this` otherwise
+ * @return {Maybe} other if the `this` maybe is Nothing. `this` otherwise
  */
 const or = abstract('or');
 
@@ -222,7 +222,7 @@ const safe = abstract('safe');
  *
  * withDefault function can be made from caseof:
  *
- * ```
+ * ```javascript
  * const withDefault = maybe => defaultValue => caseof({
  *   Just: value => value,
  *   Nothing: () => defaultValue,
@@ -230,7 +230,7 @@ const safe = abstract('safe');
  *
  * ```
  *
- * @param {object} - just-nothing object pattern
+ * @param {object} object - just-nothing object pattern
  * @return {*} value
  *
  */
@@ -241,9 +241,9 @@ const caseof = abstract('caseof');
  *
  * zip : Maybe a -> Maybe b -> Maybe([a, b])
  *
- * @param maybe - to zip with
+ * @param {Maybe} maybe - to zip with
  *
- * @return {Maybe} value - if `Maybe a` and `Maybe b` are Just, it returns `Maybe [a, b]`
+ * @return {Maybe} if `Maybe a` and `Maybe b` are Just, it returns `Maybe [a, b]`
  * Otherwise returns Nothing
  *
  */
@@ -254,10 +254,10 @@ const zip = abstract('zip');
  *
  * zipWith : Maybe a -> Maybe b -> ([a, b] -> c) -> Maybe c
  *
- * @param maybe - to zip with
- * @param f - to apply to the zipped maybe values
+ * @param {Maybe} maybe - to zip with
+ * @param {Function} f - to apply to the zipped maybe values
  *
- * @return {Maybe} value - If this is `Just a` and other is `Just b`,
+ * @return {Maybe} If this is `Just a` and other is `Just b`,
  * it returns `Maybe(f([a, b]))`
  *
  */
@@ -268,7 +268,7 @@ const zipWith = abstract('zipWith');
  *
  * Maybe.lift : (a -> b) -> (Maybe a -> Maybe b)
  *
- * @param {Function} the unary function to lift
+ * @param {Function} f - the unary function to lift
  * @return {Function} the unary lifted function
  */
 const lift = abstract('lift');
@@ -278,7 +278,7 @@ const lift = abstract('lift');
  *
  * Maybe.lift : (a -> b -> c) -> (Maybe a -> Maybe b -> Maybe c)
  *
- * @param {Function} the binary function to lift
+ * @param {Function} f - the binary function to lift
  * @return {Function} the lifted binary function
  */
 const lift2 = abstract('lift2');
