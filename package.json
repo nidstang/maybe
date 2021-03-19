@@ -19,6 +19,9 @@
     "version": "npm run lint && npm run build && git add -A dist",
     "postversion": "git push origin dev && git push --tags"
   },
+  "directories": {
+      "doc": "./docs/api.md"
+  },
   "keywords": [
     "maybe",
     "monad",
