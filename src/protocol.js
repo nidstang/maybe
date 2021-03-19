@@ -263,7 +263,6 @@ const zip = abstract('zip');
  */
 const zipWith = abstract('zipWith');
 
-const Maybe = {};
 /**
  * It lifts an unary function that works with `a` type to `Maybe a` and `Maybe b`
  *
@@ -272,7 +271,7 @@ const Maybe = {};
  * @param {Function} the unary function to lift
  * @return {Function} the unary lifted function
  */
-Maybe.lift = abstract('lift');
+const lift = abstract('lift');
 
 /**
  * It lifts a binary function that works with `a` and `b` types to `Maybe a`, `Maybe b` `Maybe c`
@@ -282,7 +281,7 @@ Maybe.lift = abstract('lift');
  * @param {Function} the binary function to lift
  * @return {Function} the lifted binary function
  */
-Maybe.lift2 = abstract('lift2');
+const lift2 = abstract('lift2');
 
 export default {
     isNothing,

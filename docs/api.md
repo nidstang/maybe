@@ -101,6 +101,14 @@ caseof takes a just-nothing pattern which is an object and looks like:
 <dd><p>Zips this and another Maybe with function f</p>
 <p>zipWith : Maybe a -&gt; Maybe b -&gt; ([a, b] -&gt; c) -&gt; Maybe c</p>
 </dd>
+<dt><a href="#lift">lift</a> ⇒ <code>function</code></dt>
+<dd><p>It lifts an unary function that works with <code>a</code> type to <code>Maybe a</code> and <code>Maybe b</code></p>
+<p>Maybe.lift : (a -&gt; b) -&gt; (Maybe a -&gt; Maybe b)</p>
+</dd>
+<dt><a href="#lift2">lift2</a> ⇒ <code>function</code></dt>
+<dd><p>It lifts a binary function that works with <code>a</code> and <code>b</code> types to <code>Maybe a</code>, <code>Maybe b</code> <code>Maybe c</code></p>
+<p>Maybe.lift : (a -&gt; b -&gt; c) -&gt; (Maybe a -&gt; Maybe b -&gt; Maybe c)</p>
+</dd>
 </dl>
 
 <a name="isNothing"></a>
@@ -392,4 +400,30 @@ it returns `Maybe(f([a, b]))`
 | --- | --- |
 | maybe | to zip with |
 | f | to apply to the zipped maybe values |
+
+<a name="lift"></a>
+
+## lift ⇒ <code>function</code>
+It lifts an unary function that works with `a` type to `Maybe a` and `Maybe b`
+
+Maybe.lift : (a -> b) -> (Maybe a -> Maybe b)
+
+**Returns**: <code>function</code> - the unary lifted function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| the | <code>function</code> | unary function to lift |
+
+<a name="lift2"></a>
+
+## lift2 ⇒ <code>function</code>
+It lifts a binary function that works with `a` and `b` types to `Maybe a`, `Maybe b` `Maybe c`
+
+Maybe.lift : (a -> b -> c) -> (Maybe a -> Maybe b -> Maybe c)
+
+**Returns**: <code>function</code> - the lifted binary function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| the | <code>function</code> | binary function to lift |
 
