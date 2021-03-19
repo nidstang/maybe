@@ -2,15 +2,21 @@
   "name": "maybe-monada",
   "version": "2.0.4",
   "description": "A maybe monad in JavaScript",
+  "homepage": "https://github.com/nidstang/maybe",
   "main": "dist/maybe.node.js",
   "browser": "dist/maybe.js",
   "scripts": {
     "lint": "eslint ./src",
     "lint-fix": "eslint ./src --fix",
-    "transpile": "webpack --config buildTools/webpack.config.js",
-    "test": "ava tests/",
+    "build": "webpack --config buildTools/webpack.config.js",
+    "docs": "./buildTools/genDocs.sh",
+    "test": "tape -r @babel/register tests/dev.js",
+    "test-pro": "npm run test-node-pro && npm run test-web-pro",
+    "test-node-pro": "tape tests/node-pro.js",
+    "test-web-pro": "tape tests/web-pro.js",
+    "watch": "npm-watch",
     "preversion": "npm test",
-    "version": "npm run lint && npm run transpile && git add -A dist",
+    "version": "npm run lint && npm run build && git add -A dist",
     "postversion": "git push origin dev && git push --tags"
   },
   "keywords": [
@@ -25,19 +31,20 @@
     "@babel/core": "^7.4.4",
     "@babel/preset-env": "^7.4.4",
     "@babel/register": "^7.4.4",
-    "ava": "^1.4.1",
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.5",
-    "eslint": "^5.16.0",
-    "standard": "^12.0.1",
+    "eslint": "^7.21.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "jsdoc-to-markdown": "^7.0.0",
+    "npm-watch": "^0.7.0",
+    "tape": "^5.2.2",
     "uglifyjs-webpack-plugin": "^2.1.2",
     "webpack": "^4.30.0",
     "webpack-cli": "^3.3.2",
     "webpack-merge": "^4.2.1"
   },
-  "ava": {
-    "require": [
-      "@babel/register"
-    ]
+  "watch": {
+    "test": "{src,tests}/*.js"
   }
 }

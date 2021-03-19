@@ -1,4 +1,4 @@
-const node = require('./webpack.node')
-const web = require('./webpack.web')
+const node = require('./webpack.node');
+const web = require('./webpack.web');
 
-module.exports = [ node, web ]
+module.exports = [node, web];

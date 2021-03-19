@@ -1,5 +1,6 @@
 # JavaScript Maybe
-[![Build Status](https://travis-ci.org/nidstang/maybe.svg?branch=master)](https://travis-ci.org/nidstang/maybe)
+![master build](https://github.com/nidstang/maybe/actions/workflows/tests.node.js.yml/badge.svg?branch=master)
+![dev build](https://github.com/nidstang/maybe/actions/workflows/tests.node.js.yml/badge.svg?branch=dev)
 [![npm version](https://badge.fury.io/js/maybe-monada.svg)](https://badge.fury.io/js/maybe-monada)
 
 ## Introduction

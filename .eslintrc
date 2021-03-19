@@ -1,8 +1,18 @@
 {
+  "extends": "airbnb-base",
   "parser": "babel-eslint",
-  "extends": "standard",
   "env": {
     "browser": true,
     "node": true
+  },
+
+  "rules": {
+      "indent": ["warn", 4],
+      "no-shadow": "off",
+      "no-confusing-arrow": ["error", {"allowParens": true}],
+      "prefer-object-spread": "off",
+      "no-unused-vars": "off",
+      "arrow-parens": "off",
+      "no-use-before-define": "off"
   }
 }
