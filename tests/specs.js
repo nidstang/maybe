@@ -47,6 +47,47 @@ module.exports = test => Maybe => {
         t.end();
     });
 
+    test('Maybe.of', (t) => {
+        {
+            const m = Maybe.of(undefined);
+            t.same(m.isNothing(), true, 'Given an undefined to Maybe.of, m.isNothing() must return true');
+        }
+
+        {
+            const m = Maybe.of(false);
+            t.same(m.isNothing(), false);
+            const value = m.withDefault('hello');
+            t.same(value, false, 'Given a boolean False, the unwrapped value must be False');
+        }
+
+        {
+            const m = Maybe.of(0);
+            t.same(m.isNothing(), false, 'Given a falsy value 0, isNothing must be False');
+        }
+        t.end();
+    });
+
+    test('Maybe.toPromise', (t) => {
+        {
+            const m = Maybe.of(1);
+            const p = Maybe.toPromise(m);
+
+            p.then((value) => {
+                t.same(value, 1, 'Given a Just, toPromise must return a resolved promise');
+            });
+        }
+
+        {
+            const m = Maybe.of();
+            const p = Maybe.toPromise(m);
+
+            p.catch(() => {
+                t.pass('Given a Nothing, toPromise must return a rejected promise');
+            })
+            .finally(() => t.end());
+        }
+    });
+
     test('map', (t) => {
         {
             const result = Maybe.Just(2)
@@ -115,6 +156,29 @@ module.exports = test => Maybe => {
 
             res.map(value => (
                 t.same(value, 2, 'Given a Just, a default function  and a function, mapOrElse must return Just(f(value))')
+            ));
+        }
+
+        t.end();
+    });
+
+    test('ap', (t) => {
+        {
+            const m = Maybe.Nothing();
+            const type = Maybe.Just(1);
+            const res = m.ap(type);
+
+            t.same(res.isNothing(), true, 'Given a Nothing, ap to other maybe must return Nothing');
+        }
+
+        {
+            const double = x => x * 2;
+            const m = Maybe.Just(double);
+            const type = Maybe.Just(2);
+            const res = m.ap(type);
+
+            res.map(value => (
+                t.same(value, 4, 'Given a Just(double), ap to other maybe must apply the function inside to the type passed')
             ));
         }
 

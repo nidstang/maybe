@@ -44,6 +44,10 @@ const Nothing = () => ({
         defaultF()
     ),
 
+    ap: (other) => (
+        Nothing()
+    ),
+
     filter: () => Nothing(),
 
     andThen: () => Nothing(),
@@ -107,6 +111,10 @@ const Just = (value) => ({
         Maybe(f(value))
     ),
 
+    ap: (other) => (
+        other.map(value)
+    ),
+
     filter: (fn) => (fn(value) ? Just(value) : Nothing()),
 
     andThen: (fn) => fn(value),
@@ -150,5 +158,10 @@ Maybe.lift2 = (f) => (ma, mb) => ma.map2(mb, f);
 Maybe.Just = value => Object.assign({}, MaybeProtocol, Just(value));
 Maybe.Nothing = () => Object.assign({}, MaybeProtocol, Nothing());
 Maybe.from = Maybe;
+Maybe.of = Maybe;
+Maybe.toPromise = maybe => maybe.caseof({
+    Just: value => Promise.resolve(value),
+    Nothing: () => Promise.reject(),
+});
 
 export default Maybe;

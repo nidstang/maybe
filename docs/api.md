@@ -60,6 +60,24 @@ it is recommended to use mapOrElse, which is lazily evaluated.</p>
 This is an alias over zip and then apply a two params function</p>
 <p>map2 : Maybe a -&gt; Maybe b -&gt; (a -&gt; b -&gt; c) -&gt; Maybe c</p>
 </dd>
+<dt><a href="#ap">ap</a> ⇒ <code>Maybe</code></dt>
+<dd><p>Applies a function inside of a Maybe to another Maybe
+This function could be used to lift regular functions to Maybe.
+Since functions are first-class citizen, they can be used as values too.</p>
+<p>Lift example:</p>
+<pre><code class="language-javascript">const lift2 = f =&gt; (m1, m2) =&gt; Maybe.of(f).ap(m1).ap(m2);
+const add = a =&gt; b =&gt; a + b; // important! f must be curried
+
+const addLifted = lift2(add);
+
+addLifted(Maybe.of(1), Maybe.of(2)) // Just(3)
+
+// or you can use Ramda
+
+const addLifted = R.lift(add);
+</code></pre>
+<p>ap : (a -&gt; b) -&gt; Maybe a -&gt; Maybe b</p>
+</dd>
 <dt><a href="#filter">filter</a> ⇒ <code>Maybe</code></dt>
 <dd><p>Filters a <code>Maybe a</code> (this) by applying a function to a wrapped value
 that matchs the predicate</p>
@@ -280,6 +298,38 @@ map2 : Maybe a -> Maybe b -> (a -> b -> c) -> Maybe c
 | --- | --- | --- |
 | other | <code>Maybe</code> | other maybe to be passed to f |
 | f | <code>function</code> | two params function to apply to |
+
+<a name="ap"></a>
+
+## ap ⇒ <code>Maybe</code>
+Applies a function inside of a Maybe to another Maybe
+This function could be used to lift regular functions to Maybe.
+Since functions are first-class citizen, they can be used as values too.
+
+Lift example:
+
+```javascript
+const lift2 = f => (m1, m2) => Maybe.of(f).ap(m1).ap(m2);
+const add = a => b => a + b; // important! f must be curried
+
+const addLifted = lift2(add);
+
+addLifted(Maybe.of(1), Maybe.of(2)) // Just(3)
+
+// or you can use Ramda
+
+const addLifted = R.lift(add);
+
+```
+
+ap : (a -> b) -> Maybe a -> Maybe b
+
+**Returns**: <code>Maybe</code> - a Just with the result of applying the function
+inside of a Maybe to value of other else Nothing  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| other | <code>Maybe</code> | other maybe to be applied to Maybe(a -> b) |
 
 <a name="filter"></a>
 
