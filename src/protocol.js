@@ -156,6 +156,36 @@ const mapOrElse = abstract('mapOrElse');
 const map2 = abstract('map2');
 
 /**
+ * Applies a function inside of a Maybe to another Maybe
+ * This function could be used to lift regular functions to Maybe.
+ * Since functions are first-class citizen, they can be used as values too.
+ *
+ * Lift example:
+ *
+ * ```javascript
+ * const lift2 = f => (m1, m2) => Maybe.of(f).ap(m1).ap(m2);
+ * const add = a => b => a + b; // important! f must be curried
+ *
+ * const addLifted = lift2(add);
+ *
+ * addLifted(Maybe.of(1), Maybe.of(2)) // Just(3)
+ *
+ * // or you can use Ramda
+ *
+ * const addLifted = R.lift(add);
+ *
+ * ```
+ *
+ * ap : (a -> b) -> Maybe a -> Maybe b
+ *
+ * @param {Maybe} other - other maybe to be applied to Maybe(a -> b)
+ * @return {Maybe} a Just with the result of applying the function
+ * inside of a Maybe to value of other else Nothing
+ *
+ */
+const ap = abstract('ap');
+
+/**
  * Filters a `Maybe a` (this) by applying a function to a wrapped value
  * that matchs the predicate
  *
