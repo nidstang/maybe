@@ -210,6 +210,19 @@ const filter = abstract('filter');
 const andThen = abstract('andThen');
 
 /**
+ * This function is just an andThen alias
+ * Flat maps a `Maybe a` to `Maybe b` by applying a function
+ * that returns a Maybe to a wrapped value
+ *
+ * chain : Maybe a -> (a -> Maybe b) -> Maybe b
+ *
+ * @param {Function} f - function to apply that returns a Maybe
+ * @return {Maybe} Just(f(value)) if maybe is `Just`. Otherwise `Nothing`
+ *
+ */
+const chain = abstract('chain');
+
+/**
  * It returns Nothing if other is Nothing. Otherwise it returns `other`
  *
  * and : Maybe a -> Maybe b -> Maybe b

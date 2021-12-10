@@ -234,6 +234,7 @@ module.exports = test => Maybe => {
 
         t.end();
     });
+
     test('andThen', (t) => {
         {
             const res = Maybe.Just(1)
@@ -250,7 +251,29 @@ module.exports = test => Maybe => {
                 .andThen(() => Maybe.Just('Hello world'));
 
             t.same(res.isNothing(), true);
-            t.same(res.withDefault(0), 0, 'Given a Nothing and a function that returns a Maybe, andThe must not apply the function');
+            t.same(res.withDefault(0), 0, 'Given a Nothing and a function that returns a Maybe, andThen must not apply the function');
+        }
+
+        t.end();
+    });
+
+    test('chain', (t) => {
+        {
+            const res = Maybe.Just(1)
+                .chain((value) => Maybe.Just(value * 2))
+                .chain(() => Maybe.Just('Hello world'));
+
+            t.same(res.isNothing(), false);
+            t.same(res.withDefault(0), 'Hello world', 'Given a Just and a function that returns a Maybe, chain must apply that function to Just');
+        }
+
+        {
+            const res = Maybe.Just(1)
+                .chain(() => Maybe.Nothing())
+                .chain(() => Maybe.Just('Hello world'));
+
+            t.same(res.isNothing(), true);
+            t.same(res.withDefault(0), 0, 'Given a Nothing and a function that returns a Maybe, chain must not apply the function');
         }
 
         t.end();

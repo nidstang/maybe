@@ -52,6 +52,8 @@ const Nothing = () => ({
 
     andThen: () => Nothing(),
 
+    chain: () => Nothing(),
+
     and: (other) => Nothing(),
 
     or: (other) => other,
@@ -118,6 +120,8 @@ const Just = (value) => ({
     filter: (fn) => (fn(value) ? Just(value) : Nothing()),
 
     andThen: (fn) => fn(value),
+
+    chain: (fn) => fn(value),
 
     and: (other) => (!other.isNothing() ? other : Nothing()),
     or() {
