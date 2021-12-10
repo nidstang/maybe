@@ -88,6 +88,12 @@ that matchs the predicate</p>
 that returns a Maybe to a wrapped value</p>
 <p>andThen : Maybe a -&gt; (a -&gt; Maybe b) -&gt; Maybe b</p>
 </dd>
+<dt><a href="#chain">chain</a> ⇒ <code>Maybe</code></dt>
+<dd><p>This function is just an andThen alias
+Flat maps a <code>Maybe a</code> to <code>Maybe b</code> by applying a function
+that returns a Maybe to a wrapped value</p>
+<p>chain : Maybe a -&gt; (a -&gt; Maybe b) -&gt; Maybe b</p>
+</dd>
 <dt><a href="#and">and</a> ⇒ <code>Maybe</code></dt>
 <dd><p>It returns Nothing if other is Nothing. Otherwise it returns <code>other</code></p>
 <p>and : Maybe a -&gt; Maybe b -&gt; Maybe b</p>
@@ -352,6 +358,21 @@ Flat maps a `Maybe a` to `Maybe b` by applying a function
 that returns a Maybe to a wrapped value
 
 andThen : Maybe a -> (a -> Maybe b) -> Maybe b
+
+**Returns**: <code>Maybe</code> - Just(f(value)) if maybe is `Just`. Otherwise `Nothing`  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| f | <code>function</code> | function to apply that returns a Maybe |
+
+<a name="chain"></a>
+
+## chain ⇒ <code>Maybe</code>
+This function is just an andThen alias
+Flat maps a `Maybe a` to `Maybe b` by applying a function
+that returns a Maybe to a wrapped value
+
+chain : Maybe a -> (a -> Maybe b) -> Maybe b
 
 **Returns**: <code>Maybe</code> - Just(f(value)) if maybe is `Just`. Otherwise `Nothing`  
 
