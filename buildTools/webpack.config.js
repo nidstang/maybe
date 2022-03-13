@@ -1,4 +1,36 @@
-const node = require('./webpack.node');
-const web = require('./webpack.web');
+const path = require('path');
 
-module.exports = [node, web];
+const sourcePath = path.resolve(__dirname, '../src');
+
+module.exports = {
+    mode: 'production',
+
+    entry: path.resolve(__dirname, '../src/maybe.js'),
+
+    output: {
+        path: path.resolve(__dirname, '../dist'),
+        filename: 'maybe.js',
+        library: 'maybe',
+        libraryTarget: 'umd',
+        libraryExport: 'default',
+        umdNamedDefine: true,
+        globalObject: 'this',
+    },
+
+    resolve: {
+        extensions: ['.js'],
+        alias: {
+            '@': sourcePath,
+        },
+    },
+
+    module: {
+        rules: [
+            {
+                test: /\.js$/,
+                include: sourcePath,
+                loader: 'babel-loader',
+            },
+        ],
+    },
+};
