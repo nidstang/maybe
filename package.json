@@ -1,6 +1,6 @@
 {
   "name": "maybe-monada",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "A 5Kb maybe monad in JavaScript",
   "homepage": "https://github.com/nidstang/maybe",
   "main": "dist/maybe.js",
