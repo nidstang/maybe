@@ -43,17 +43,18 @@ it is recommended to use unwrapOrElse, which is lazily evaluated.</p>
 <dd><p>Maps a <code>Maybe a</code> (this) to <code>Maybe b</code> by applying a function to a wrapped value</p>
 <p>map : Maybe a -&gt; (a -&gt; b) -&gt; Maybe b</p>
 </dd>
-<dt><a href="#mapOr">mapOr</a> ⇒ <code>*</code></dt>
+<dt><a href="#mapOr">mapOr</a> ⇒ <code>Maybe</code></dt>
 <dd><p>If there is a wrapped value, it applies a function to it.
 Otherwise it returns the provide default</p>
 <p>Arguments passed to map_or are eagerly evaluated;
 if you are passing the result of a function call,
 it is recommended to use mapOrElse, which is lazily evaluated.</p>
-<p>mapOr : Maybe a -&gt; b -&gt; (a -&gt; b) -&gt; b</p>
+<p>mapOr : Maybe a -&gt; b -&gt; (a -&gt; b) -&gt; Maybe b</p>
 </dd>
-<dt><a href="#mapOrElse">mapOrElse</a> ⇒ <code>*</code></dt>
-<dd><p>Applies a function to a wrapped value if any. Otherwise computes a default value</p>
-<p>mapOrElse : Maybe a -&gt; (b) -&gt; (a -&gt; b) -&gt; b</p>
+<dt><a href="#mapOrElse">mapOrElse</a> ⇒ <code>Maybe</code></dt>
+<dd><p>Applies a function to a wrapped value if any.
+Otherwise computes a default value and put it into a Just</p>
+<p>mapOrElse : Maybe a -&gt; (b) -&gt; (a -&gt; b) -&gt; Maybe b</p>
 </dd>
 <dt><a href="#map2">map2</a> ⇒ <code>Maybe</code></dt>
 <dd><p>Applies f to <code>this</code> and other.
@@ -259,7 +260,7 @@ map : Maybe a -> (a -> b) -> Maybe b
 
 <a name="mapOr"></a>
 
-## mapOr ⇒ <code>\*</code>
+## mapOr ⇒ <code>Maybe</code>
 If there is a wrapped value, it applies a function to it.
 Otherwise it returns the provide default
 
@@ -267,27 +268,28 @@ Arguments passed to map_or are eagerly evaluated;
 if you are passing the result of a function call,
 it is recommended to use mapOrElse, which is lazily evaluated.
 
-mapOr : Maybe a -> b -> (a -> b) -> b
+mapOr : Maybe a -> b -> (a -> b) -> Maybe b
 
-**Returns**: <code>\*</code> - `Just(f(value))` if maybe is `Just(value)` else `defaultValue`  
+**Returns**: <code>Maybe</code> - `Just(f(value))` if maybe is `Just(value)` else `Just(defaultValue)`  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| defaultValue | <code>\*</code> | the value to return if Maybe a is Nothing |
-| f | <code>function</code> | function to apply if Maybe a is Just |
+| defaultValue | <code>\*</code> | the value to put into a Just if Maybe a is Nothing |
+| f | <code>function</code> | function to apply if Maybe is Just |
 
 <a name="mapOrElse"></a>
 
-## mapOrElse ⇒ <code>\*</code>
-Applies a function to a wrapped value if any. Otherwise computes a default value
+## mapOrElse ⇒ <code>Maybe</code>
+Applies a function to a wrapped value if any.
+Otherwise computes a default value and put it into a Just
 
-mapOrElse : Maybe a -> (b) -> (a -> b) -> b
+mapOrElse : Maybe a -> (b) -> (a -> b) -> Maybe b
 
-**Returns**: <code>\*</code> - `Just(f(value))` if maybe is `Just(value)` else `default()`  
+**Returns**: <code>Maybe</code> - `Just(f(value))` if maybe is `Just(value)` else `Just(default())`  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| default | <code>function</code> | the function to compute a default value |
+| default | <code>function</code> | the function to compute a default value and put it into a Just |
 | f | <code>function</code> | function to apply to if Maybe a is Just |
 
 <a name="map2"></a>
