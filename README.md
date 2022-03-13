@@ -160,3 +160,12 @@ const total = m1.zipWith(m2, add) // Maybe(24)
 ```
 
 You can check all docs out here: https://github.com/nidstang/maybe/blob/master/docs/api.md
+
+
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
