@@ -122,23 +122,24 @@ const map = abstract('map');
  * if you are passing the result of a function call,
  * it is recommended to use mapOrElse, which is lazily evaluated.
  *
- * mapOr : Maybe a -> b -> (a -> b) -> b
+ * mapOr : Maybe a -> b -> (a -> b) -> Maybe b
  *
- * @param {*} defaultValue - the value to return if Maybe a is Nothing
- * @param {Function} f - function to apply if Maybe a is Just
- * @return {*} `Just(f(value))` if maybe is `Just(value)` else `defaultValue`
+ * @param {*} defaultValue - the value to put into a Just if Maybe a is Nothing
+ * @param {Function} f - function to apply if Maybe is Just
+ * @return {Maybe} `Just(f(value))` if maybe is `Just(value)` else `Just(defaultValue)`
  *
  */
 const mapOr = abstract('mapOr');
 
 /**
- * Applies a function to a wrapped value if any. Otherwise computes a default value
+ * Applies a function to a wrapped value if any.
+ * Otherwise computes a default value and put it into a Just
  *
- * mapOrElse : Maybe a -> (b) -> (a -> b) -> b
+ * mapOrElse : Maybe a -> (b) -> (a -> b) -> Maybe b
  *
- * @param {Function} default - the function to compute a default value
+ * @param {Function} default - the function to compute a default value and put it into a Just
  * @param {Function} f - function to apply to if Maybe a is Just
- * @return {*} `Just(f(value))` if maybe is `Just(value)` else `default()`
+ * @return {Maybe} `Just(f(value))` if maybe is `Just(value)` else `Just(default())`
  */
 const mapOrElse = abstract('mapOrElse');
 

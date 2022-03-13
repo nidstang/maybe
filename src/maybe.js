@@ -37,11 +37,11 @@ const Nothing = () => ({
     map2: (other, f) => Nothing(),
 
     mapOr: (defaultValue, f) => (
-        defaultValue
+        Just(defaultValue)
     ),
 
     mapOrElse: (defaultF, f) => (
-        defaultF()
+        Just(defaultF())
     ),
 
     ap: (other) => (
@@ -124,6 +124,7 @@ const Just = (value) => ({
     chain: (fn) => fn(value),
 
     and: (other) => (!other.isNothing() ? other : Nothing()),
+
     or() {
         return this;
     },

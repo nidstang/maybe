@@ -124,7 +124,9 @@ module.exports = test => Maybe => {
             const m = Maybe.Nothing();
             const res = m.mapOr(0, double);
 
-            t.same(res, 0, 'Given a Nothing, a defaultValue and a function, mapOr must return defaultValue');
+            res.map(value => (
+                t.same(value, 0, 'Given a Nothing, a defaultValue and a function, mapOr must return defaultValue')
+            ));
         }
 
         {
@@ -139,7 +141,7 @@ module.exports = test => Maybe => {
         t.end();
     });
 
-    test('mapOr', (t) => {
+    test('mapOrElse', (t) => {
         const double = x => x * 2;
         const defaultVal = () => 0;
 
@@ -147,7 +149,9 @@ module.exports = test => Maybe => {
             const m = Maybe.Nothing();
             const res = m.mapOrElse(defaultVal, double);
 
-            t.same(res, 0, 'Given a Nothing, a default function and a function, mapOrElse must return default()');
+            res.map(value => (
+                t.same(value, 0, 'Given a Nothing, a default function and a function, mapOrElse must return default()')
+            ));
         }
 
         {
