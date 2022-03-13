@@ -132,7 +132,8 @@ const map = abstract('map');
 const mapOr = abstract('mapOr');
 
 /**
- * Applies a function to a wrapped value if any. Otherwise computes a default value and put it into a Just
+ * Applies a function to a wrapped value if any.
+ * Otherwise computes a default value and put it into a Just
  *
  * mapOrElse : Maybe a -> (b) -> (a -> b) -> Maybe b
  *
