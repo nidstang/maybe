@@ -1,12 +1,12 @@
-module.exports = test => Maybe => {
+module.exports = test => M => {
     test('Maybe factory', (t) => {
         {
-            const m = Maybe();
+            const m = M.Maybe();
             t.same(m.isNothing(), true, 'Given a nullable to Maybe, m.isNothing() must return true');
         }
 
         {
-            const m = Maybe(1);
+            const m = M.Maybe(1);
             t.same(m.isNothing(), false, 'Given a number to Maybe, m.isNothing() must return false');
         }
 
@@ -14,14 +14,14 @@ module.exports = test => Maybe => {
     });
 
     test('Maybe.Just', (t) => {
-        const m = Maybe.Just(1);
+        const m = M.Just(1);
         t.same(m.isNothing(), false, 'Given a number to Maybe.Just, m.isNothing() must return false');
 
         t.end();
     });
 
     test('Maybe.Nothing', (t) => {
-        const m = Maybe.Nothing();
+        const m = M.Nothing();
         t.same(m.isNothing(), true, 'Given a number to Maybe.Nothing, m.isNothing() must return true');
 
         t.end();
@@ -29,19 +29,19 @@ module.exports = test => Maybe => {
 
     test('Maybe.from', (t) => {
         {
-            const m = Maybe.from(undefined);
+            const m = M.from(undefined);
             t.same(m.isNothing(), true, 'Given an undefined to Maybe.from, m.isNothing() must return true');
         }
 
         {
-            const m = Maybe.from(false);
+            const m = M.from(false);
             t.same(m.isNothing(), false);
             const value = m.withDefault('hello');
             t.same(value, false, 'Given a boolean False, the unwrapped value must be False');
         }
 
         {
-            const m = Maybe.from(0);
+            const m = M.from(0);
             t.same(m.isNothing(), false, 'Given a falsy value 0, isNothing must be False');
         }
         t.end();
@@ -49,19 +49,19 @@ module.exports = test => Maybe => {
 
     test('Maybe.of', (t) => {
         {
-            const m = Maybe.of(undefined);
+            const m = M.of(undefined);
             t.same(m.isNothing(), true, 'Given an undefined to Maybe.of, m.isNothing() must return true');
         }
 
         {
-            const m = Maybe.of(false);
+            const m = M.of(false);
             t.same(m.isNothing(), false);
             const value = m.withDefault('hello');
             t.same(value, false, 'Given a boolean False, the unwrapped value must be False');
         }
 
         {
-            const m = Maybe.of(0);
+            const m = M.of(0);
             t.same(m.isNothing(), false, 'Given a falsy value 0, isNothing must be False');
         }
         t.end();
@@ -69,8 +69,8 @@ module.exports = test => Maybe => {
 
     test('Maybe.toPromise', (t) => {
         {
-            const m = Maybe.of(1);
-            const p = Maybe.toPromise(m);
+            const m = M.of(1);
+            const p = M.toPromise(m);
 
             p.then((value) => {
                 t.same(value, 1, 'Given a Just, toPromise must return a resolved promise');
@@ -78,8 +78,8 @@ module.exports = test => Maybe => {
         }
 
         {
-            const m = Maybe.of();
-            const p = Maybe.toPromise(m);
+            const m = M.of();
+            const p = M.toPromise(m);
 
             p.catch(() => {
                 t.pass('Given a Nothing, toPromise must return a rejected promise');
@@ -90,14 +90,14 @@ module.exports = test => Maybe => {
 
     test('map', (t) => {
         {
-            const result = Maybe.Just(2)
+            const result = M.Just(2)
                 .map((val) => val * val)
                 .withDefault(0);
 
             t.same(result, 4, 'Given a Just(2) and a function, map should apply the function to maybe');
         }
         {
-            const a1 = Maybe(1);
+            const a1 = M.Maybe(1);
             const a2 = 1;
 
             const result = a1.map((x) => x + a2);
@@ -106,7 +106,7 @@ module.exports = test => Maybe => {
         }
 
         {
-            const a1 = Maybe.from(1);
+            const a1 = M.from(1);
             const test = x => null;
 
             const res = a1.map(test);
@@ -121,7 +121,7 @@ module.exports = test => Maybe => {
         const double = x => x * 2;
 
         {
-            const m = Maybe.Nothing();
+            const m = M.Nothing();
             const res = m.mapOr(0, double);
 
             res.map(value => (
@@ -130,7 +130,7 @@ module.exports = test => Maybe => {
         }
 
         {
-            const m = Maybe.Just(1);
+            const m = M.Just(1);
             const res = m.mapOr(0, double);
 
             res.map(value => (
@@ -146,7 +146,7 @@ module.exports = test => Maybe => {
         const defaultVal = () => 0;
 
         {
-            const m = Maybe.Nothing();
+            const m = M.Nothing();
             const res = m.mapOrElse(defaultVal, double);
 
             res.map(value => (
@@ -155,7 +155,7 @@ module.exports = test => Maybe => {
         }
 
         {
-            const m = Maybe.Just(1);
+            const m = M.Just(1);
             const res = m.mapOrElse(defaultVal, double);
 
             res.map(value => (
@@ -168,8 +168,8 @@ module.exports = test => Maybe => {
 
     test('ap', (t) => {
         {
-            const m = Maybe.Nothing();
-            const type = Maybe.Just(1);
+            const m = M.Nothing();
+            const type = M.Just(1);
             const res = m.ap(type);
 
             t.same(res.isNothing(), true, 'Given a Nothing, ap to other maybe must return Nothing');
@@ -177,8 +177,8 @@ module.exports = test => Maybe => {
 
         {
             const double = x => x * 2;
-            const m = Maybe.Just(double);
-            const type = Maybe.Just(2);
+            const m = M.Just(double);
+            const type = M.Just(2);
             const res = m.ap(type);
 
             res.map(value => (
@@ -190,7 +190,7 @@ module.exports = test => Maybe => {
     });
 
     test('safe', (t) => {
-        const m = Maybe('Hello');
+        const m = M.Maybe('Hello');
         const result = m.safe((value) => `${value} world`);
 
         t.same(result, 'Hello world', 'Given a Maybe and a function, safe must apply the maybe to that function');
@@ -200,7 +200,7 @@ module.exports = test => Maybe => {
 
     test('caseof', (t) => {
         {
-            const m = Maybe(10);
+            const m = M.Maybe(10);
             let result = '';
             m.caseof({
                 Just: () => {
@@ -215,7 +215,7 @@ module.exports = test => Maybe => {
         }
 
         {
-            const m = Maybe(2);
+            const m = M.Maybe(2);
             const re = m.caseof({
                 Just: (value) => value * 4,
                 Nothing: () => 10,
@@ -225,7 +225,7 @@ module.exports = test => Maybe => {
         }
 
         {
-            const m = Maybe(2);
+            const m = M.Maybe(2);
             try {
                 m.caseof({
                     Just: () => 10,
@@ -241,18 +241,18 @@ module.exports = test => Maybe => {
 
     test('andThen', (t) => {
         {
-            const res = Maybe.Just(1)
-                .andThen((value) => Maybe.Just(value * 2))
-                .andThen(() => Maybe.Just('Hello world'));
+            const res = M.Just(1)
+                .andThen((value) => M.Just(value * 2))
+                .andThen(() => M.Just('Hello world'));
 
             t.same(res.isNothing(), false);
             t.same(res.withDefault(0), 'Hello world', 'Given a Just and a function that returns a Maybe, andThen must apply that function to Just');
         }
 
         {
-            const res = Maybe.Just(1)
-                .andThen(() => Maybe.Nothing())
-                .andThen(() => Maybe.Just('Hello world'));
+            const res = M.Just(1)
+                .andThen(() => M.Nothing())
+                .andThen(() => M.Just('Hello world'));
 
             t.same(res.isNothing(), true);
             t.same(res.withDefault(0), 0, 'Given a Nothing and a function that returns a Maybe, andThen must not apply the function');
@@ -263,18 +263,18 @@ module.exports = test => Maybe => {
 
     test('chain', (t) => {
         {
-            const res = Maybe.Just(1)
-                .chain((value) => Maybe.Just(value * 2))
-                .chain(() => Maybe.Just('Hello world'));
+            const res = M.Just(1)
+                .chain((value) => M.Just(value * 2))
+                .chain(() => M.Just('Hello world'));
 
             t.same(res.isNothing(), false);
             t.same(res.withDefault(0), 'Hello world', 'Given a Just and a function that returns a Maybe, chain must apply that function to Just');
         }
 
         {
-            const res = Maybe.Just(1)
-                .chain(() => Maybe.Nothing())
-                .chain(() => Maybe.Just('Hello world'));
+            const res = M.Just(1)
+                .chain(() => M.Nothing())
+                .chain(() => M.Just('Hello world'));
 
             t.same(res.isNothing(), true);
             t.same(res.withDefault(0), 0, 'Given a Nothing and a function that returns a Maybe, chain must not apply the function');
@@ -285,7 +285,7 @@ module.exports = test => Maybe => {
 
     test('filter', (t) => {
         {
-            const res = Maybe.from(1)
+            const res = M.from(1)
                 .map((x) => x * 2)
                 .filter((x) => x > 2)
                 .withDefault(0);
@@ -294,7 +294,7 @@ module.exports = test => Maybe => {
         }
 
         {
-            const res = Maybe.from(2)
+            const res = M.from(2)
                 .map((x) => x * 2)
                 .filter((x) => x > 2)
                 .withDefault(0);
@@ -303,7 +303,7 @@ module.exports = test => Maybe => {
         }
 
         {
-            const res = Maybe.from([])
+            const res = M.from([])
                 .filter((arr) => arr.length !== 0)
                 .filter((arr) => arr.slice(1, 2))
                 .withDefault(0);
@@ -316,28 +316,28 @@ module.exports = test => Maybe => {
 
     test('zip', (t) => {
         {
-            const m = Maybe.Nothing();
-            const m2 = Maybe.Nothing();
+            const m = M.Nothing();
+            const m2 = M.Nothing();
 
             t.same(m.zip(m2).isNothing(), true, 'Given two Nothing, zip must return Nothing');
         }
         {
-            const m = Maybe.Nothing();
-            const m2 = Maybe.Just(1);
+            const m = M.Nothing();
+            const m2 = M.Just(1);
 
             t.same(m.zip(m2).isNothing(), true, 'Given a Nothing and a (Just 1), zip must return Nothing');
         }
 
         {
-            const m = Maybe.Just(1);
-            const m2 = Maybe.Nothing();
+            const m = M.Just(1);
+            const m2 = M.Nothing();
 
             t.same(m.zip(m2).isNothing(), true, 'Given a (Just 1) and a Nothing, zip must return Nothing');
         }
 
         {
-            const m = Maybe.Just(1);
-            const m2 = Maybe.Just(true);
+            const m = M.Just(1);
+            const m2 = M.Just(true);
 
             const res = m.zip(m2);
 
@@ -355,28 +355,28 @@ module.exports = test => Maybe => {
         const combine = (([a, b]) => a + b);
 
         {
-            const m = Maybe.Nothing();
-            const m2 = Maybe.Nothing();
+            const m = M.Nothing();
+            const m2 = M.Nothing();
 
             t.same(m.zipWith(m2, combine).isNothing(), true, 'Given two Nothing, zipWith must return Nothing');
         }
         {
-            const m = Maybe.Nothing();
-            const m2 = Maybe.Just(1);
+            const m = M.Nothing();
+            const m2 = M.Just(1);
 
             t.same(m.zipWith(m2, combine).isNothing(), true, 'Given a Nothing and a (Just 1), zipWith must return Nothing');
         }
 
         {
-            const m = Maybe.Just(1);
-            const m2 = Maybe.Nothing();
+            const m = M.Just(1);
+            const m2 = M.Nothing();
 
             t.same(m.zipWith(m2, combine).isNothing(), true, 'Given a (Just 1) and a Nothing, zipWith must return Nothing');
         }
 
         {
-            const m = Maybe.Just(2);
-            const m2 = Maybe.Just(2);
+            const m = M.Just(2);
+            const m2 = M.Just(2);
 
             const res = m.zipWith(m2, combine);
 
@@ -392,28 +392,28 @@ module.exports = test => Maybe => {
 
     test('and', t => {
         {
-            const m = Maybe.Nothing();
-            t.same(m.and(Maybe.Nothing()).isNothing(), true, 'Given a Nothing self and an Nothing other, `and` must return Nothing');
+            const m = M.Nothing();
+            t.same(m.and(M.Nothing()).isNothing(), true, 'Given a Nothing self and an Nothing other, `and` must return Nothing');
         }
 
         {
-            const m = Maybe.Nothing();
-            t.same(m.and(Maybe.Just(1)).isNothing(), true, 'Given a Nothing self and a Just other, `and` must return Nothing');
+            const m = M.Nothing();
+            t.same(m.and(M.Just(1)).isNothing(), true, 'Given a Nothing self and a Just other, `and` must return Nothing');
         }
 
         {
-            const m = Maybe.Just(1);
-            t.same(m.and(Maybe.Nothing()).isNothing(), true, 'Given a Just self and a Nothing other, `and` must return Nothing');
+            const m = M.Just(1);
+            t.same(m.and(M.Nothing()).isNothing(), true, 'Given a Just self and a Nothing other, `and` must return Nothing');
         }
 
         {
-            const m = Maybe.Just(1);
-            t.same(m.and(Maybe.Just(2)).isNothing(), false, 'Given a Just self and a Just other, `and` must return Just');
+            const m = M.Just(1);
+            t.same(m.and(M.Just(2)).isNothing(), false, 'Given a Just self and a Just other, `and` must return Just');
         }
 
         {
-            const m = Maybe.Just(1);
-            t.same(m.and(Maybe.Just(2)).withDefault(0), 2, 'Given a Just self and a Just 2 other, `and` must return other Just');
+            const m = M.Just(1);
+            t.same(m.and(M.Just(2)).withDefault(0), 2, 'Given a Just self and a Just 2 other, `and` must return other Just');
         }
 
         t.end();
@@ -421,23 +421,23 @@ module.exports = test => Maybe => {
 
     test('or', t => {
         {
-            const m = Maybe.Nothing();
-            t.same(m.or(Maybe.Nothing()).isNothing(), true, 'Given a Nothing self and an Nothing other, `or` must return Nothing');
+            const m = M.Nothing();
+            t.same(m.or(M.Nothing()).isNothing(), true, 'Given a Nothing self and an Nothing other, `or` must return Nothing');
         }
 
         {
-            const m = Maybe.Nothing();
-            t.same(m.or(Maybe.Just(1)).withDefault(0), 1, 'Given a Nothing self and an Just(1), `or` must return Just(1)');
+            const m = M.Nothing();
+            t.same(m.or(M.Just(1)).withDefault(0), 1, 'Given a Nothing self and an Just(1), `or` must return Just(1)');
         }
 
         {
-            const m = Maybe.Just(2);
-            t.same(m.or(Maybe.Nothing()).withDefault(0), 2, 'Given a Just(2) and a Nothing, `or` must return Just(2)');
+            const m = M.Just(2);
+            t.same(m.or(M.Nothing()).withDefault(0), 2, 'Given a Just(2) and a Nothing, `or` must return Just(2)');
         }
 
         {
-            const m = Maybe.Just(2);
-            t.same(m.or(Maybe.Just(3)).withDefault(0), 2, 'Given a Just(2) and a Just(3) `or` must return Just(2)');
+            const m = M.Just(2);
+            t.same(m.or(M.Just(3)).withDefault(0), 2, 'Given a Just(2) and a Just(3) `or` must return Just(2)');
         }
 
         t.end();
@@ -445,17 +445,17 @@ module.exports = test => Maybe => {
 
     test('contains', t => {
         {
-            const m = Maybe.Nothing();
+            const m = M.Nothing();
             t.same(m.contains(1), false, 'Given a Nothing and a 1, `contains` must return `false` since 1 is not in the maybe');
         }
 
         {
-            const m = Maybe.Just(1);
+            const m = M.Just(1);
             t.same(m.contains(1), true, 'Given a Just(1) and a 1, `contains` must return `true` since 1 is inside of');
         }
 
         {
-            const m = Maybe.Just(1);
+            const m = M.Just(1);
             t.same(m.contains(2), false, 'Given a Just(1) and a 2, `contains` must return `false` since 1 is not inside of');
         }
 
@@ -464,7 +464,7 @@ module.exports = test => Maybe => {
 
     test('expect', t => {
         {
-            const m = Maybe.Nothing();
+            const m = M.Nothing();
 
             try {
                 const value = m.expect('There is not value');
@@ -475,7 +475,7 @@ module.exports = test => Maybe => {
         }
 
         {
-            const m = Maybe.Nothing();
+            const m = M.Nothing();
 
             try {
                 const value = m.expect('There is not value');
@@ -486,7 +486,7 @@ module.exports = test => Maybe => {
         }
 
         {
-            const m = Maybe.Just('hello world');
+            const m = M.Just('hello world');
 
             try {
                 const value = m.expect('There is not value');
@@ -501,7 +501,7 @@ module.exports = test => Maybe => {
 
     test('unwrap', t => {
         {
-            const m = Maybe.Nothing();
+            const m = M.Nothing();
 
             try {
                 const value = m.unwrap();
@@ -512,7 +512,7 @@ module.exports = test => Maybe => {
         }
 
         {
-            const m = Maybe.Nothing();
+            const m = M.Nothing();
 
             try {
                 const value = m.unwrap();
@@ -523,7 +523,7 @@ module.exports = test => Maybe => {
         }
 
         {
-            const m = Maybe.Just('hello world');
+            const m = M.Just('hello world');
 
             try {
                 const value = m.unwrap('There is not value');
@@ -538,12 +538,12 @@ module.exports = test => Maybe => {
 
     test('unwrapOr', t => {
         {
-            const m = Maybe.Nothing();
+            const m = M.Nothing();
             t.same(m.unwrapOr(2), 2, 'Given a Nothing maybe and a default value of 2, `unwrapOr` must return 2');
         }
 
         {
-            const m = Maybe.Just(2);
+            const m = M.Just(2);
             t.same(m.unwrapOr(1), 2, 'Given a Just() maybe and a default value of 1, `unwrapOr` must return 2');
         }
 
@@ -552,12 +552,12 @@ module.exports = test => Maybe => {
 
     test('unwrapOrElse', t => {
         {
-            const m = Maybe.Nothing();
+            const m = M.Nothing();
             t.same(m.unwrapOrElse(() => 2), 2, 'Given a Nothing maybe and a function which computes to 2, `unwrapOr` must return 2');
         }
 
         {
-            const m = Maybe.Just(2);
+            const m = M.Just(2);
             t.same(m.unwrapOrElse(() => 1), 2, 'Given a Just() maybe a function which computes to 1, `unwrapOr` must return 2');
         }
 
@@ -566,12 +566,12 @@ module.exports = test => Maybe => {
 
     test('withDefault', t => {
         {
-            const m = Maybe.Nothing();
+            const m = M.Nothing();
             t.same(m.withDefault(2), 2, 'Given a Nothing maybe and a default value of 2, `withDefault` must return 2');
         }
 
         {
-            const m = Maybe.Just(2);
+            const m = M.Just(2);
             t.same(m.withDefault(1), 2, 'Given a Just()  maybe and a default value of 1, `withDefault` must return 2');
         }
 
@@ -582,18 +582,18 @@ module.exports = test => Maybe => {
         const add = (a, b) => a + b;
 
         {
-            const m = Maybe.Nothing();
-            t.same(m.map2(Maybe.Just(1), add).isNothing(), true, 'Given a Nothing, a Just and a f, map2 must return Nothing');
+            const m = M.Nothing();
+            t.same(m.map2(M.Just(1), add).isNothing(), true, 'Given a Nothing, a Just and a f, map2 must return Nothing');
         }
 
         {
-            const m = Maybe.Just(1);
-            t.same(m.map2(Maybe.Nothing(), add).isNothing(), true, 'Given a Just, a Nothing and a f, map2 must return Nothing');
+            const m = M.Just(1);
+            t.same(m.map2(M.Nothing(), add).isNothing(), true, 'Given a Just, a Nothing and a f, map2 must return Nothing');
         }
 
         {
-            const m = Maybe.Just(1);
-            const res = m.map2(Maybe.Just(2), add);
+            const m = M.Just(1);
+            const res = m.map2(M.Just(2), add);
             t.same(res.isNothing(), false, 'Given a Just, another Just and a f, map2 must return Just');
             t.same(res.unwrapOr(0), 3, 'Given a Just 1, Just 2 and an add function, map2 must return a Just with the result within');
         }
@@ -602,10 +602,10 @@ module.exports = test => Maybe => {
     });
 
     test('Maybe.lift', t => {
-        const m1 = Maybe.Just(1);
-        const nothing = Maybe.Nothing();
+        const m1 = M.Just(1);
+        const nothing = M.Nothing();
         const double = x => x * 2;
-        const liftedF = Maybe.lift(double);
+        const liftedF = M.lift(double);
 
         {
             const res = liftedF(m1);
@@ -623,10 +623,10 @@ module.exports = test => Maybe => {
     });
 
     test('Maybe.lift2', t => {
-        const m1 = Maybe.Just(2);
-        const nothing = Maybe.Nothing();
+        const m1 = M.Just(2);
+        const nothing = M.Nothing();
         const add = (a, b) => a + b;
-        const liftedF = Maybe.lift2(add);
+        const liftedF = M.lift2(add);
 
         {
             const res = liftedF(m1, m1);
