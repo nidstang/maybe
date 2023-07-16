@@ -1,4 +1,5 @@
 const path = require('path');
+const CopyPlugin = require('copy-webpack-plugin');
 
 const sourcePath = path.resolve(__dirname, '../src');
 
@@ -32,4 +33,15 @@ module.exports = {
             },
         ],
     },
+
+    plugins: [
+        new CopyPlugin({
+            patterns: [
+                {
+                    from: './src/defs/maybe.d.ts',
+                    to: 'maybe.d.ts',
+                },
+            ],
+        }),
+    ],
 };
