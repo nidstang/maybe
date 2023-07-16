@@ -1,11 +1,3 @@
-/**
-    * @template T
-    *
-    * @typedef {import('./defs/maybe').Maybe<T>} Maybe
-    *
-*/
-import MaybeProtocol from './protocol';
-
 function UnwrapException(msg) {
     this.name = 'UnwrapException';
     this.message = msg;
