@@ -12,7 +12,6 @@ module.exports = {
         filename: 'maybe.js',
         library: 'maybe',
         libraryTarget: 'umd',
-        libraryExport: 'default',
         umdNamedDefine: true,
         globalObject: 'this',
     },
