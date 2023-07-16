@@ -1,5 +1,7 @@
 const test = require('tape');
-const Maybe = require('../dist/maybe.js');
+const M = require('../dist/maybe.js');
 const Specs = require('./specs.js');
 
-Specs(test)(Maybe);
+const Maybe = M.default;
+
+Specs(test)({ Maybe, ...M });
