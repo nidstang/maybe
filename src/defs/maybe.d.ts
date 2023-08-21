@@ -21,8 +21,6 @@ declare module 'maybe-monada' {
         or<K>(other : Maybe<K>) : Maybe<K> | Maybe<T>;
         zip<K>(other : Maybe<K>) : Maybe<[T,K]>;
         zipWith<K,J>(other : Maybe<K>, fn : (value: [T,K]) => J) : Maybe<J>;
-        lift<K>(fn : (value : T) => K) : (value : Maybe<T>) => Maybe<K>;
-        lift2<K,J>(fn : (value1 : T, value2 : K) => J) : (value1 : Maybe<T>, value2 : Maybe<K>) => Maybe<J>;
         caseof<K,J>(pattern : { Just: (value : T ) => K, Nothing: () => J }) : K | J;
     }
 
